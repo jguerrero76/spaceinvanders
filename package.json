@@ -1,0 +1,26 @@
+{
+  "name": "spaceinvanders-gamepad",
+  "version": "1.0.0",
+  "description": "Space Invaders game for Safari with gamepad support on Mac",
+  "main": "index.html",
+  "scripts": {
+    "start": "python3 -m http.server 8000",
+    "serve": "python3 -m http.server 8000"
+  },
+  "keywords": [
+    "game",
+    "space-invaders",
+    "gamepad",
+    "safari",
+    "mac",
+    "browser-game",
+    "html5",
+    "canvas"
+  ],
+  "author": "jgm04@eprinsa.es",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jguerrero76/spaceinvanders.git"
+  }
+}

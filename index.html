@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Invaders - GamePad Support</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #000;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        #gameContainer {
+            position: relative;
+            width: 800px;
+            height: 600px;
+            background: linear-gradient(to bottom, #001 0%, #000 100%);
+            border: 3px solid #0f0;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+            overflow: hidden;
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+            image-rendering: pixelated;
+        }
+
+        #gameUI {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            display: flex;
+            justify-content: space-between;
+            color: #0f0;
+            font-size: 14px;
+            z-index: 10;
+            text-shadow: 0 0 10px #0f0;
+        }
+
+        #gameOver {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            padding: 40px;
+            border: 3px solid #0f0;
+            text-align: center;
+            z-index: 100;
+            display: none;
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.5);
+        }
+
+        #gameOver h1 {
+            color: #0f0;
+            margin-bottom: 20px;
+            font-size: 32px;
+            text-shadow: 0 0 10px #0f0;
+        }
+
+        #gameOver p {
+            color: #0f0;
+            margin-bottom: 20px;
+        }
+
+        #gameOver button {
+            background: #0f0;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        #gameOver button:hover {
+            background: #0a0;
+            box-shadow: 0 0 10px #0f0;
+        }
+
+        #gamepadStatus {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            color: #0f0;
+            font-size: 12px;
+            text-shadow: 0 0 10px #0f0;
+            max-width: 200px;
+        }
+
+        .gamepad-connected {
+            color: #0f0;
+        }
+
+        .gamepad-disconnected {
+            color: #f00;
+        }
+
+        #instructions {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #0f0;
+            font-size: 12px;
+            text-align: center;
+            text-shadow: 0 0 10px #0f0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="gameContainer">
+        <canvas id="gameCanvas"></canvas>
+        <div id="gameUI">
+            <div>Score: <span id="score">0</span></div>
+            <div>Lives: <span id="lives">3</span></div>
+            <div>Level: <span id="level">1</span></div>
+        </div>
+        <div id="gamepadStatus">
+            <div id="gamepadIndicator" class="gamepad-disconnected">🎮 Sin mando</div>
+            <div id="gamepadButtons" style="margin-top: 5px; font-size: 10px;"></div>
+        </div>
+        <div id="instructions">
+            ⌨️ Flechas/WASD | 🎮 Stick Izquierdo | ESPACIO/🎮 Botón A para disparar
+        </div>
+        <div id="gameOver">
+            <h1>GAME OVER</h1>
+            <p>Score Final: <span id="finalScore">0</span></p>
+            <button onclick="location.reload()">Jugar de Nuevo</button>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
