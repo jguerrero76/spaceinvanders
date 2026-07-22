@@ -25,14 +25,19 @@ const player = {
     y: canvas.height - 70,
     width: 40,
     height: 30,
-    speed: 3,
+    speed: 4,
     dx: 0,
-    shoot: false
+    shoot: false,
+    shootCooldown: 0,
+    maxShootCooldown: 5
 };
 
 // Bullets
 let bullets = [];
 let enemyBullets = [];
+
+// Particles for explosions
+let particles = [];
 
 // Enemies
 let enemies = [];
@@ -118,6 +123,23 @@ function drawPixel(x, y, size = 4) {
     ctx.fillRect(x, y, size, size);
 }
 
+// Create explosion effect
+function createExplosion(x, y, color = '#ffff00') {
+    for (let i = 0; i < 8; i++) {
+        const angle = (Math.PI * 2 * i) / 8;
+        const speed = 2 + Math.random() * 3;
+        particles.push({
+            x: x,
+            y: y,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed,
+            life: 20,
+            maxLife: 20,
+            color: color
+        });
+    }
+}
+
 // Enemy constructor
 class Enemy {
     constructor(x, y, type = 0) {
@@ -126,9 +148,9 @@ class Enemy {
         this.type = type; // 0 = red, 1 = cyan, 2 = magenta
         this.width = 40;
         this.height = 30;
-        this.speed = 1 + (level * 0.3);
+        this.speed = 1 + (level * 0.5);
         this.direction = 1;
-        this.shootChance = Math.random() * 0.0015 + 0.0001;
+        this.shootChance = Math.random() * (0.002 + level * 0.0002) + 0.0001;
     }
 
     update() {
@@ -158,7 +180,7 @@ class Enemy {
 
         // Draw simple but recognizable aliens
         if (this.type === 0) {
-            // RED - Octopus style
+            // RED - Octopus style - Higher points
             ctx.fillRect(x + 8, y + 4, 24, 12);
             ctx.fillRect(x + 6, y + 16, 28, 8);
 
@@ -268,8 +290,12 @@ function updatePlayer() {
     if (player.x < 0) player.x = 0;
     if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
 
-    // Shooting
-    if (player.shoot) {
+    // Shooting with cooldown
+    if (player.shootCooldown > 0) {
+        player.shootCooldown--;
+    }
+
+    if (player.shoot && player.shootCooldown <= 0) {
         bullets.push({
             x: player.x + player.width / 2 - 3,
             y: player.y - 10,
@@ -278,6 +304,7 @@ function updatePlayer() {
             speed: 5
         });
         player.shoot = false;
+        player.shootCooldown = player.maxShootCooldown;
     }
 }
 
@@ -320,7 +347,14 @@ function updateBullets() {
                 bullets[i].y < enemy.y + enemy.height &&
                 bullets[i].y + bullets[i].height > enemy.y
             ) {
-                score += 10;
+                // Score based on enemy type
+                const scores = [30, 20, 10];
+                score += scores[enemy.type];
+
+                // Create explosion
+                const colors = ['#ff3333', '#00ffff', '#ff00ff'];
+                createExplosion(enemy.x + enemy.width / 2, enemy.y + enemy.height / 2, colors[enemy.type]);
+
                 bullets.splice(i, 1);
                 enemies.splice(j, 1);
                 break;
@@ -364,6 +398,30 @@ function drawBullets() {
     ctx.fillStyle = '#ff3333';
     for (let bullet of enemyBullets) {
         ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+    }
+}
+
+function updateParticles() {
+    for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.1; // gravity
+        p.life--;
+
+        if (p.life <= 0) {
+            particles.splice(i, 1);
+        }
+    }
+}
+
+function drawParticles() {
+    for (let p of particles) {
+        const alpha = p.life / p.maxLife;
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle = p.color;
+        ctx.fillRect(p.x, p.y, 4, 4);
+        ctx.globalAlpha = 1;
     }
 }
 
@@ -427,6 +485,7 @@ function update() {
     updatePlayer();
     updateBullets();
     updateEnemies();
+    updateParticles();
     drawUI();
 }
 
@@ -454,6 +513,7 @@ function draw() {
     drawPlayer();
     drawBullets();
     drawEnemies();
+    drawParticles();
 }
 
 function gameLoop(currentTime) {
