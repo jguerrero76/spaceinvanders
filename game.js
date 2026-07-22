@@ -14,14 +14,18 @@ let level = 1;
 let gameRunning = true;
 let gamepadConnected = false;
 let gamepadIndex = null;
+let lastFrameTime = 0;
+const FPS = 30;
+const FRAME_DELAY = 1000 / FPS;
+let animationFrame = 0;
 
 // Player
 const player = {
     x: canvas.width / 2 - 20,
-    y: canvas.height - 50,
+    y: canvas.height - 70,
     width: 40,
     height: 40,
-    speed: 5,
+    speed: 3,
     dx: 0,
     shoot: false
 };
@@ -117,9 +121,9 @@ class Enemy {
         this.y = y;
         this.width = 30;
         this.height = 30;
-        this.speed = 2 + (level * 0.5);
+        this.speed = 1 + (level * 0.3);
         this.direction = 1;
-        this.shootChance = Math.random() * 0.02 + 0.001;
+        this.shootChance = Math.random() * 0.008 + 0.0005;
     }
 
     update() {
@@ -127,21 +131,50 @@ class Enemy {
 
         if (Math.random() < this.shootChance) {
             enemyBullets.push({
-                x: this.x + this.width / 2 - 5,
+                x: this.x + this.width / 2 - 3,
                 y: this.y + this.height,
-                width: 10,
-                height: 15,
-                speed: 3
+                width: 6,
+                height: 12,
+                speed: 2
             });
         }
     }
 
     draw() {
+        const x = this.x;
+        const y = this.y;
+        const w = this.width;
+        const h = this.height;
+
         ctx.fillStyle = '#f00';
-        ctx.fillRect(this.x, this.y, this.width, this.height);
         ctx.strokeStyle = '#ff0';
-        ctx.lineWidth = 2;
-        ctx.strokeRect(this.x, this.y, this.width, this.height);
+        ctx.lineWidth = 1;
+
+        // Animation frame (toggles every few frames)
+        const frame = Math.floor(animationFrame / 10) % 2;
+
+        // Draw alien invader (classic Space Invaders style)
+        // Body
+        ctx.fillRect(x + 5, y + 8, w - 10, h - 10);
+
+        // Head
+        ctx.fillRect(x + 8, y + 2, w - 16, 6);
+
+        // Eyes
+        ctx.fillRect(x + 10, y + 4, 3, 2);
+        ctx.fillRect(x + w - 13, y + 4, 3, 2);
+
+        // Legs (animation)
+        if (frame === 0) {
+            ctx.fillRect(x + 8, y + h - 5, 3, 5);
+            ctx.fillRect(x + w - 11, y + h - 5, 3, 5);
+        } else {
+            ctx.fillRect(x + 6, y + h - 5, 3, 5);
+            ctx.fillRect(x + w - 9, y + h - 5, 3, 5);
+        }
+
+        // Border
+        ctx.strokeRect(x + 5, y + 8, w - 10, h - 10);
     }
 }
 
@@ -179,24 +212,40 @@ function updatePlayer() {
     // Shooting
     if (player.shoot) {
         bullets.push({
-            x: player.x + player.width / 2 - 5,
-            y: player.y,
-            width: 10,
-            height: 20,
-            speed: 7
+            x: player.x + player.width / 2 - 3,
+            y: player.y - 10,
+            width: 6,
+            height: 15,
+            speed: 5
         });
         player.shoot = false;
     }
 }
 
 function drawPlayer() {
+    // Draw spaceship (classic Space Invaders style)
     ctx.fillStyle = '#0f0';
-    ctx.fillRect(player.x, player.y, player.width, player.height);
-    ctx.fillStyle = '#0a0';
-    ctx.fillRect(player.x + 15, player.y - 10, 10, 10);
     ctx.strokeStyle = '#0f0';
     ctx.lineWidth = 2;
-    ctx.strokeRect(player.x, player.y, player.width, player.height);
+
+    // Main body
+    ctx.fillRect(player.x + 5, player.y + 15, 30, 20);
+
+    // Top point
+    ctx.beginPath();
+    ctx.moveTo(player.x + 20, player.y);
+    ctx.lineTo(player.x + 15, player.y + 15);
+    ctx.lineTo(player.x + 25, player.y + 15);
+    ctx.closePath();
+    ctx.fill();
+
+    // Wings
+    ctx.fillRect(player.x, player.y + 10, 5, 15);
+    ctx.fillRect(player.x + 35, player.y + 10, 5, 15);
+
+    // Engine glow
+    ctx.fillStyle = '#0a0';
+    ctx.fillRect(player.x + 15, player.y + 35, 10, 5);
 }
 
 function updateBullets() {
@@ -251,16 +300,29 @@ function updateBullets() {
 }
 
 function drawBullets() {
-    // Player bullets
+    // Player bullets - green laser style
     ctx.fillStyle = '#0f0';
+    ctx.strokeStyle = '#0a0';
+    ctx.lineWidth = 1;
     for (let bullet of bullets) {
         ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+        ctx.strokeRect(bullet.x, bullet.y, bullet.width, bullet.height);
     }
 
-    // Enemy bullets
-    ctx.fillStyle = '#f00';
+    // Enemy bullets - red/orange plasma
+    ctx.fillStyle = '#ff6600';
+    ctx.strokeStyle = '#ff0000';
+    ctx.lineWidth = 1;
     for (let bullet of enemyBullets) {
-        ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+        // Diamond/star shape for enemy bullets
+        ctx.beginPath();
+        ctx.moveTo(bullet.x + bullet.width / 2, bullet.y);
+        ctx.lineTo(bullet.x + bullet.width, bullet.y + bullet.height / 2);
+        ctx.lineTo(bullet.x + bullet.width / 2, bullet.y + bullet.height);
+        ctx.lineTo(bullet.x, bullet.y + bullet.height / 2);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
     }
 }
 
@@ -353,9 +415,20 @@ function draw() {
     drawEnemies();
 }
 
-function gameLoop() {
-    update();
-    draw();
+function gameLoop(currentTime) {
+    if (lastFrameTime === 0) {
+        lastFrameTime = currentTime;
+    }
+
+    const deltaTime = currentTime - lastFrameTime;
+
+    if (deltaTime >= FRAME_DELAY) {
+        update();
+        draw();
+        animationFrame++;
+        lastFrameTime = currentTime;
+    }
+
     requestAnimationFrame(gameLoop);
 }
 
