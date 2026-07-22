@@ -128,7 +128,7 @@ class Enemy {
         this.height = 30;
         this.speed = 1 + (level * 0.3);
         this.direction = 1;
-        this.shootChance = Math.random() * 0.008 + 0.0005;
+        this.shootChance = Math.random() * 0.0015 + 0.0001;
     }
 
     update() {
@@ -232,8 +232,8 @@ function createEnemyWave() {
     enemies = [];
     waveCount++;
 
-    const rows = 3 + Math.floor(level / 2);
-    const cols = 8;
+    const rows = 4 + Math.floor(level / 2);
+    const cols = 10;
 
     for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cols; j++) {
@@ -243,7 +243,9 @@ function createEnemyWave() {
             else if (i === 1 || i === 2) type = 1; // Cyan
             else type = 2; // Magenta
 
-            enemies.push(new Enemy(j * 80 + 50, i * 60 + 30, type));
+            // Spread enemies across the entire screen width
+            const spacing = (canvas.width - 100) / cols;
+            enemies.push(new Enemy(20 + j * spacing, 30 + i * 60, type));
         }
     }
 }
