@@ -24,7 +24,7 @@ const player = {
     x: canvas.width / 2 - 20,
     y: canvas.height - 70,
     width: 40,
-    height: 40,
+    height: 30,
     speed: 3,
     dx: 0,
     shoot: false
@@ -90,7 +90,6 @@ function handleGamepadInput() {
 
     // Get left stick input
     const leftStickX = gamepad.axes[0];
-    const leftStickY = gamepad.axes[1];
 
     // Reset horizontal movement
     player.dx = 0;
@@ -114,13 +113,19 @@ function handleGamepadInput() {
     }
 }
 
+// Helper function to draw pixelated sprites
+function drawPixel(x, y, size = 2) {
+    ctx.fillRect(x, y, size, size);
+}
+
 // Enemy constructor
 class Enemy {
-    constructor(x, y) {
+    constructor(x, y, type = 0) {
         this.x = x;
         this.y = y;
-        this.width = 30;
-        this.height = 30;
+        this.type = type; // 0 = red, 1 = cyan, 2 = magenta
+        this.width = 32;
+        this.height = 24;
         this.speed = 1 + (level * 0.3);
         this.direction = 1;
         this.shootChance = Math.random() * 0.008 + 0.0005;
@@ -143,50 +148,197 @@ class Enemy {
     draw() {
         const x = this.x;
         const y = this.y;
-        const w = this.width;
-        const h = this.height;
-
-        ctx.fillStyle = '#f00';
-        ctx.strokeStyle = '#ff0';
-        ctx.lineWidth = 1;
-
-        // Animation frame (toggles every few frames)
         const frame = Math.floor(animationFrame / 10) % 2;
 
-        // Draw alien invader (classic Space Invaders style)
-        // Body
-        ctx.fillRect(x + 5, y + 8, w - 10, h - 10);
+        // Colors
+        const colors = ['#ff3333', '#00ffff', '#ff00ff'];
+        ctx.fillStyle = colors[this.type];
 
-        // Head
-        ctx.fillRect(x + 8, y + 2, w - 16, 6);
+        if (this.type === 0) {
+            // RED ALIEN - Octopus/Squid type
+            // Top
+            drawPixel(x + 8, y, 2);
+            drawPixel(x + 12, y, 2);
 
-        // Eyes
-        ctx.fillRect(x + 10, y + 4, 3, 2);
-        ctx.fillRect(x + w - 13, y + 4, 3, 2);
+            // Head
+            drawPixel(x + 4, y + 2, 2);
+            drawPixel(x + 6, y + 2, 2);
+            drawPixel(x + 8, y + 2, 2);
+            drawPixel(x + 10, y + 2, 2);
+            drawPixel(x + 12, y + 2, 2);
+            drawPixel(x + 14, y + 2, 2);
+            drawPixel(x + 16, y + 2, 2);
+            drawPixel(x + 18, y + 2, 2);
 
-        // Legs (animation)
-        if (frame === 0) {
-            ctx.fillRect(x + 8, y + h - 5, 3, 5);
-            ctx.fillRect(x + w - 11, y + h - 5, 3, 5);
+            // Eyes
+            drawPixel(x + 8, y + 4, 2);
+            drawPixel(x + 12, y + 4, 2);
+
+            // Mid section
+            drawPixel(x + 2, y + 6, 2);
+            drawPixel(x + 4, y + 6, 2);
+            drawPixel(x + 6, y + 6, 2);
+            drawPixel(x + 8, y + 6, 2);
+            drawPixel(x + 10, y + 6, 2);
+            drawPixel(x + 12, y + 6, 2);
+            drawPixel(x + 14, y + 6, 2);
+            drawPixel(x + 16, y + 6, 2);
+            drawPixel(x + 18, y + 6, 2);
+            drawPixel(x + 20, y + 6, 2);
+
+            // Bottom
+            drawPixel(x + 4, y + 8, 2);
+            drawPixel(x + 6, y + 8, 2);
+            drawPixel(x + 8, y + 8, 2);
+            drawPixel(x + 10, y + 8, 2);
+            drawPixel(x + 12, y + 8, 2);
+            drawPixel(x + 14, y + 8, 2);
+            drawPixel(x + 16, y + 8, 2);
+            drawPixel(x + 18, y + 8, 2);
+
+            // Legs
+            if (frame === 0) {
+                drawPixel(x + 2, y + 10, 2);
+                drawPixel(x + 4, y + 10, 2);
+                drawPixel(x + 16, y + 10, 2);
+                drawPixel(x + 18, y + 10, 2);
+                drawPixel(x + 20, y + 10, 2);
+            } else {
+                drawPixel(x + 4, y + 10, 2);
+                drawPixel(x + 6, y + 10, 2);
+                drawPixel(x + 14, y + 10, 2);
+                drawPixel(x + 16, y + 10, 2);
+                drawPixel(x + 18, y + 10, 2);
+            }
+
+        } else if (this.type === 1) {
+            // CYAN ALIEN - Crab type
+            // Top antenna
+            drawPixel(x + 6, y, 2);
+            drawPixel(x + 14, y, 2);
+
+            // Head
+            drawPixel(x + 4, y + 2, 2);
+            drawPixel(x + 6, y + 2, 2);
+            drawPixel(x + 8, y + 2, 2);
+            drawPixel(x + 10, y + 2, 2);
+            drawPixel(x + 12, y + 2, 2);
+            drawPixel(x + 14, y + 2, 2);
+            drawPixel(x + 16, y + 2, 2);
+            drawPixel(x + 18, y + 2, 2);
+
+            // Eyes
+            drawPixel(x + 8, y + 4, 2);
+            drawPixel(x + 12, y + 4, 2);
+
+            // Middle
+            drawPixel(x + 2, y + 6, 2);
+            drawPixel(x + 4, y + 6, 2);
+            drawPixel(x + 6, y + 6, 2);
+            drawPixel(x + 8, y + 6, 2);
+            drawPixel(x + 10, y + 6, 2);
+            drawPixel(x + 12, y + 6, 2);
+            drawPixel(x + 14, y + 6, 2);
+            drawPixel(x + 16, y + 6, 2);
+            drawPixel(x + 18, y + 6, 2);
+            drawPixel(x + 20, y + 6, 2);
+
+            // Bottom
+            drawPixel(x + 4, y + 8, 2);
+            drawPixel(x + 6, y + 8, 2);
+            drawPixel(x + 8, y + 8, 2);
+            drawPixel(x + 10, y + 8, 2);
+            drawPixel(x + 12, y + 8, 2);
+            drawPixel(x + 14, y + 8, 2);
+            drawPixel(x + 16, y + 8, 2);
+            drawPixel(x + 18, y + 8, 2);
+
+            // Claws
+            if (frame === 0) {
+                drawPixel(x + 2, y + 10, 2);
+                drawPixel(x + 6, y + 10, 2);
+                drawPixel(x + 14, y + 10, 2);
+                drawPixel(x + 18, y + 10, 2);
+                drawPixel(x + 20, y + 10, 2);
+            } else {
+                drawPixel(x + 4, y + 10, 2);
+                drawPixel(x + 8, y + 10, 2);
+                drawPixel(x + 12, y + 10, 2);
+                drawPixel(x + 16, y + 10, 2);
+            }
+
         } else {
-            ctx.fillRect(x + 6, y + h - 5, 3, 5);
-            ctx.fillRect(x + w - 9, y + h - 5, 3, 5);
-        }
+            // MAGENTA ALIEN - Jellyfish type
+            // Top dome
+            drawPixel(x + 6, y, 2);
+            drawPixel(x + 8, y, 2);
+            drawPixel(x + 10, y, 2);
+            drawPixel(x + 12, y, 2);
+            drawPixel(x + 14, y, 2);
 
-        // Border
-        ctx.strokeRect(x + 5, y + 8, w - 10, h - 10);
+            // Head wide
+            drawPixel(x + 4, y + 2, 2);
+            drawPixel(x + 6, y + 2, 2);
+            drawPixel(x + 8, y + 2, 2);
+            drawPixel(x + 10, y + 2, 2);
+            drawPixel(x + 12, y + 2, 2);
+            drawPixel(x + 14, y + 2, 2);
+            drawPixel(x + 16, y + 2, 2);
+            drawPixel(x + 18, y + 2, 2);
+
+            // Eyes
+            drawPixel(x + 8, y + 4, 2);
+            drawPixel(x + 12, y + 4, 2);
+
+            // Middle
+            drawPixel(x + 4, y + 6, 2);
+            drawPixel(x + 6, y + 6, 2);
+            drawPixel(x + 8, y + 6, 2);
+            drawPixel(x + 10, y + 6, 2);
+            drawPixel(x + 12, y + 6, 2);
+            drawPixel(x + 14, y + 6, 2);
+            drawPixel(x + 16, y + 6, 2);
+            drawPixel(x + 18, y + 6, 2);
+
+            // Lower
+            drawPixel(x + 6, y + 8, 2);
+            drawPixel(x + 8, y + 8, 2);
+            drawPixel(x + 10, y + 8, 2);
+            drawPixel(x + 12, y + 8, 2);
+            drawPixel(x + 14, y + 8, 2);
+
+            // Tentacles
+            if (frame === 0) {
+                drawPixel(x + 4, y + 10, 2);
+                drawPixel(x + 8, y + 10, 2);
+                drawPixel(x + 12, y + 10, 2);
+                drawPixel(x + 16, y + 10, 2);
+            } else {
+                drawPixel(x + 6, y + 10, 2);
+                drawPixel(x + 10, y + 10, 2);
+                drawPixel(x + 14, y + 10, 2);
+                drawPixel(x + 18, y + 10, 2);
+            }
+        }
     }
 }
 
 function createEnemyWave() {
     enemies = [];
     waveCount++;
+
     const rows = 3 + Math.floor(level / 2);
     const cols = 8;
 
     for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cols; j++) {
-            enemies.push(new Enemy(j * 80 + 50, i * 60 + 30));
+            // Assign enemy type based on row
+            let type = 0;
+            if (i === 0) type = 0; // Red
+            else if (i === 1 || i === 2) type = 1; // Cyan
+            else type = 2; // Magenta
+
+            enemies.push(new Enemy(j * 80 + 50, i * 60 + 30, type));
         }
     }
 }
@@ -223,29 +375,38 @@ function updatePlayer() {
 }
 
 function drawPlayer() {
-    // Draw spaceship (classic Space Invaders style)
-    ctx.fillStyle = '#0f0';
-    ctx.strokeStyle = '#0f0';
-    ctx.lineWidth = 2;
+    // Classic arcade ship - compact shape
+    ctx.fillStyle = '#00ff00';
 
     // Main body
-    ctx.fillRect(player.x + 5, player.y + 15, 30, 20);
+    drawPixel(player.x + 8, player.y + 4, 2);
+    drawPixel(player.x + 10, player.y + 4, 2);
+    drawPixel(player.x + 12, player.y + 4, 2);
+    drawPixel(player.x + 14, player.y + 4, 2);
+    drawPixel(player.x + 16, player.y + 4, 2);
+    drawPixel(player.x + 18, player.y + 4, 2);
 
-    // Top point
-    ctx.beginPath();
-    ctx.moveTo(player.x + 20, player.y);
-    ctx.lineTo(player.x + 15, player.y + 15);
-    ctx.lineTo(player.x + 25, player.y + 15);
-    ctx.closePath();
-    ctx.fill();
+    // Sides
+    drawPixel(player.x + 6, player.y + 6, 2);
+    drawPixel(player.x + 8, player.y + 6, 2);
+    drawPixel(player.x + 10, player.y + 6, 2);
+    drawPixel(player.x + 12, player.y + 6, 2);
+    drawPixel(player.x + 14, player.y + 6, 2);
+    drawPixel(player.x + 16, player.y + 6, 2);
+    drawPixel(player.x + 18, player.y + 6, 2);
+    drawPixel(player.x + 20, player.y + 6, 2);
 
-    // Wings
-    ctx.fillRect(player.x, player.y + 10, 5, 15);
-    ctx.fillRect(player.x + 35, player.y + 10, 5, 15);
+    // Bottom
+    drawPixel(player.x + 8, player.y + 8, 2);
+    drawPixel(player.x + 10, player.y + 8, 2);
+    drawPixel(player.x + 12, player.y + 8, 2);
+    drawPixel(player.x + 14, player.y + 8, 2);
+    drawPixel(player.x + 16, player.y + 8, 2);
+    drawPixel(player.x + 18, player.y + 8, 2);
 
-    // Engine glow
-    ctx.fillStyle = '#0a0';
-    ctx.fillRect(player.x + 15, player.y + 35, 10, 5);
+    // Bottom point
+    drawPixel(player.x + 12, player.y + 10, 2);
+    drawPixel(player.x + 14, player.y + 10, 2);
 }
 
 function updateBullets() {
@@ -300,29 +461,20 @@ function updateBullets() {
 }
 
 function drawBullets() {
-    // Player bullets - green laser style
-    ctx.fillStyle = '#0f0';
-    ctx.strokeStyle = '#0a0';
-    ctx.lineWidth = 1;
+    // Player bullets - green laser
+    ctx.fillStyle = '#00ff00';
     for (let bullet of bullets) {
-        ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
-        ctx.strokeRect(bullet.x, bullet.y, bullet.width, bullet.height);
+        drawPixel(bullet.x, bullet.y, 2);
+        drawPixel(bullet.x + 2, bullet.y, 2);
+        drawPixel(bullet.x + 2, bullet.y + 2, 2);
     }
 
-    // Enemy bullets - red/orange plasma
-    ctx.fillStyle = '#ff6600';
-    ctx.strokeStyle = '#ff0000';
-    ctx.lineWidth = 1;
+    // Enemy bullets - red plasma
+    ctx.fillStyle = '#ff3333';
     for (let bullet of enemyBullets) {
-        // Diamond/star shape for enemy bullets
-        ctx.beginPath();
-        ctx.moveTo(bullet.x + bullet.width / 2, bullet.y);
-        ctx.lineTo(bullet.x + bullet.width, bullet.y + bullet.height / 2);
-        ctx.lineTo(bullet.x + bullet.width / 2, bullet.y + bullet.height);
-        ctx.lineTo(bullet.x, bullet.y + bullet.height / 2);
-        ctx.closePath();
-        ctx.fill();
-        ctx.stroke();
+        drawPixel(bullet.x, bullet.y, 2);
+        drawPixel(bullet.x + 2, bullet.y, 2);
+        drawPixel(bullet.x + 2, bullet.y + 2, 2);
     }
 }
 
@@ -395,7 +547,7 @@ function draw() {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     // Grid background
-    ctx.strokeStyle = 'rgba(0, 255, 0, 0.1)';
+    ctx.strokeStyle = 'rgba(0, 255, 0, 0.05)';
     ctx.lineWidth = 1;
     for (let i = 0; i < canvas.width; i += 40) {
         ctx.beginPath();
@@ -437,7 +589,7 @@ createEnemyWave();
 updateGamepadStatus();
 gameLoop();
 
-// Fallback for checking gamepad connections (some browsers need polling)
+// Fallback for checking gamepad connections
 setInterval(() => {
     const gamepads = navigator.getGamepads?.() || [];
     for (let i = 0; i < gamepads.length; i++) {

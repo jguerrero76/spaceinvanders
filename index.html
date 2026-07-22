@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Space Invaders - GamePad Support</title>
+    <title>Invasores del Espacio - Control con Mando</title>
     <style>
         * {
             margin: 0;
@@ -128,9 +128,9 @@
     <div id="gameContainer">
         <canvas id="gameCanvas"></canvas>
         <div id="gameUI">
-            <div>Score: <span id="score">0</span></div>
-            <div>Lives: <span id="lives">3</span></div>
-            <div>Level: <span id="level">1</span></div>
+            <div>PUNTUACIÓN: <span id="score">0</span></div>
+            <div>VIDAS: <span id="lives">3</span></div>
+            <div>NIVEL: <span id="level">1</span></div>
         </div>
         <div id="gamepadStatus">
             <div id="gamepadIndicator" class="gamepad-disconnected">🎮 Sin mando</div>
@@ -140,8 +140,8 @@
             ⌨️ Flechas/WASD | 🎮 Stick Izquierdo | ESPACIO/🎮 Botón A para disparar
         </div>
         <div id="gameOver">
-            <h1>GAME OVER</h1>
-            <p>Score Final: <span id="finalScore">0</span></p>
+            <h1>¡GAME OVER!</h1>
+            <p>Puntuación Final: <span id="finalScore">0</span></p>
             <button onclick="location.reload()">Jugar de Nuevo</button>
         </div>
     </div>
