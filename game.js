@@ -114,7 +114,7 @@ function handleGamepadInput() {
 }
 
 // Helper function to draw pixelated sprites
-function drawPixel(x, y, size = 2) {
+function drawPixel(x, y, size = 4) {
     ctx.fillRect(x, y, size, size);
 }
 
@@ -124,8 +124,8 @@ class Enemy {
         this.x = x;
         this.y = y;
         this.type = type; // 0 = red, 1 = cyan, 2 = magenta
-        this.width = 32;
-        this.height = 24;
+        this.width = 40;
+        this.height = 30;
         this.speed = 1 + (level * 0.3);
         this.direction = 1;
         this.shootChance = Math.random() * 0.008 + 0.0005;
@@ -153,171 +153,76 @@ class Enemy {
         // Colors
         const colors = ['#ff3333', '#00ffff', '#ff00ff'];
         ctx.fillStyle = colors[this.type];
+        ctx.strokeStyle = colors[this.type];
+        ctx.lineWidth = 2;
 
+        // Draw simple but recognizable aliens
         if (this.type === 0) {
-            // RED ALIEN - Octopus/Squid type
-            // Top
-            drawPixel(x + 8, y, 2);
-            drawPixel(x + 12, y, 2);
-
-            // Head
-            drawPixel(x + 4, y + 2, 2);
-            drawPixel(x + 6, y + 2, 2);
-            drawPixel(x + 8, y + 2, 2);
-            drawPixel(x + 10, y + 2, 2);
-            drawPixel(x + 12, y + 2, 2);
-            drawPixel(x + 14, y + 2, 2);
-            drawPixel(x + 16, y + 2, 2);
-            drawPixel(x + 18, y + 2, 2);
+            // RED - Octopus style
+            ctx.fillRect(x + 8, y + 4, 24, 12);
+            ctx.fillRect(x + 6, y + 16, 28, 8);
 
             // Eyes
-            drawPixel(x + 8, y + 4, 2);
-            drawPixel(x + 12, y + 4, 2);
-
-            // Mid section
-            drawPixel(x + 2, y + 6, 2);
-            drawPixel(x + 4, y + 6, 2);
-            drawPixel(x + 6, y + 6, 2);
-            drawPixel(x + 8, y + 6, 2);
-            drawPixel(x + 10, y + 6, 2);
-            drawPixel(x + 12, y + 6, 2);
-            drawPixel(x + 14, y + 6, 2);
-            drawPixel(x + 16, y + 6, 2);
-            drawPixel(x + 18, y + 6, 2);
-            drawPixel(x + 20, y + 6, 2);
-
-            // Bottom
-            drawPixel(x + 4, y + 8, 2);
-            drawPixel(x + 6, y + 8, 2);
-            drawPixel(x + 8, y + 8, 2);
-            drawPixel(x + 10, y + 8, 2);
-            drawPixel(x + 12, y + 8, 2);
-            drawPixel(x + 14, y + 8, 2);
-            drawPixel(x + 16, y + 8, 2);
-            drawPixel(x + 18, y + 8, 2);
-
-            // Legs
-            if (frame === 0) {
-                drawPixel(x + 2, y + 10, 2);
-                drawPixel(x + 4, y + 10, 2);
-                drawPixel(x + 16, y + 10, 2);
-                drawPixel(x + 18, y + 10, 2);
-                drawPixel(x + 20, y + 10, 2);
-            } else {
-                drawPixel(x + 4, y + 10, 2);
-                drawPixel(x + 6, y + 10, 2);
-                drawPixel(x + 14, y + 10, 2);
-                drawPixel(x + 16, y + 10, 2);
-                drawPixel(x + 18, y + 10, 2);
-            }
-
-        } else if (this.type === 1) {
-            // CYAN ALIEN - Crab type
-            // Top antenna
-            drawPixel(x + 6, y, 2);
-            drawPixel(x + 14, y, 2);
-
-            // Head
-            drawPixel(x + 4, y + 2, 2);
-            drawPixel(x + 6, y + 2, 2);
-            drawPixel(x + 8, y + 2, 2);
-            drawPixel(x + 10, y + 2, 2);
-            drawPixel(x + 12, y + 2, 2);
-            drawPixel(x + 14, y + 2, 2);
-            drawPixel(x + 16, y + 2, 2);
-            drawPixel(x + 18, y + 2, 2);
-
-            // Eyes
-            drawPixel(x + 8, y + 4, 2);
-            drawPixel(x + 12, y + 4, 2);
-
-            // Middle
-            drawPixel(x + 2, y + 6, 2);
-            drawPixel(x + 4, y + 6, 2);
-            drawPixel(x + 6, y + 6, 2);
-            drawPixel(x + 8, y + 6, 2);
-            drawPixel(x + 10, y + 6, 2);
-            drawPixel(x + 12, y + 6, 2);
-            drawPixel(x + 14, y + 6, 2);
-            drawPixel(x + 16, y + 6, 2);
-            drawPixel(x + 18, y + 6, 2);
-            drawPixel(x + 20, y + 6, 2);
-
-            // Bottom
-            drawPixel(x + 4, y + 8, 2);
-            drawPixel(x + 6, y + 8, 2);
-            drawPixel(x + 8, y + 8, 2);
-            drawPixel(x + 10, y + 8, 2);
-            drawPixel(x + 12, y + 8, 2);
-            drawPixel(x + 14, y + 8, 2);
-            drawPixel(x + 16, y + 8, 2);
-            drawPixel(x + 18, y + 8, 2);
-
-            // Claws
-            if (frame === 0) {
-                drawPixel(x + 2, y + 10, 2);
-                drawPixel(x + 6, y + 10, 2);
-                drawPixel(x + 14, y + 10, 2);
-                drawPixel(x + 18, y + 10, 2);
-                drawPixel(x + 20, y + 10, 2);
-            } else {
-                drawPixel(x + 4, y + 10, 2);
-                drawPixel(x + 8, y + 10, 2);
-                drawPixel(x + 12, y + 10, 2);
-                drawPixel(x + 16, y + 10, 2);
-            }
-
-        } else {
-            // MAGENTA ALIEN - Jellyfish type
-            // Top dome
-            drawPixel(x + 6, y, 2);
-            drawPixel(x + 8, y, 2);
-            drawPixel(x + 10, y, 2);
-            drawPixel(x + 12, y, 2);
-            drawPixel(x + 14, y, 2);
-
-            // Head wide
-            drawPixel(x + 4, y + 2, 2);
-            drawPixel(x + 6, y + 2, 2);
-            drawPixel(x + 8, y + 2, 2);
-            drawPixel(x + 10, y + 2, 2);
-            drawPixel(x + 12, y + 2, 2);
-            drawPixel(x + 14, y + 2, 2);
-            drawPixel(x + 16, y + 2, 2);
-            drawPixel(x + 18, y + 2, 2);
-
-            // Eyes
-            drawPixel(x + 8, y + 4, 2);
-            drawPixel(x + 12, y + 4, 2);
-
-            // Middle
-            drawPixel(x + 4, y + 6, 2);
-            drawPixel(x + 6, y + 6, 2);
-            drawPixel(x + 8, y + 6, 2);
-            drawPixel(x + 10, y + 6, 2);
-            drawPixel(x + 12, y + 6, 2);
-            drawPixel(x + 14, y + 6, 2);
-            drawPixel(x + 16, y + 6, 2);
-            drawPixel(x + 18, y + 6, 2);
-
-            // Lower
-            drawPixel(x + 6, y + 8, 2);
-            drawPixel(x + 8, y + 8, 2);
-            drawPixel(x + 10, y + 8, 2);
-            drawPixel(x + 12, y + 8, 2);
-            drawPixel(x + 14, y + 8, 2);
+            ctx.fillStyle = '#000';
+            ctx.fillRect(x + 10, y + 6, 4, 4);
+            ctx.fillRect(x + 26, y + 6, 4, 4);
+            ctx.fillStyle = colors[this.type];
 
             // Tentacles
             if (frame === 0) {
-                drawPixel(x + 4, y + 10, 2);
-                drawPixel(x + 8, y + 10, 2);
-                drawPixel(x + 12, y + 10, 2);
-                drawPixel(x + 16, y + 10, 2);
+                ctx.fillRect(x + 6, y + 24, 4, 4);
+                ctx.fillRect(x + 18, y + 24, 4, 4);
+                ctx.fillRect(x + 30, y + 24, 4, 4);
             } else {
-                drawPixel(x + 6, y + 10, 2);
-                drawPixel(x + 10, y + 10, 2);
-                drawPixel(x + 14, y + 10, 2);
-                drawPixel(x + 18, y + 10, 2);
+                ctx.fillRect(x + 8, y + 24, 4, 4);
+                ctx.fillRect(x + 20, y + 24, 4, 4);
+                ctx.fillRect(x + 28, y + 24, 4, 4);
+            }
+
+        } else if (this.type === 1) {
+            // CYAN - Crab style
+            ctx.fillRect(x + 6, y + 2, 28, 10);
+            ctx.fillRect(x + 4, y + 12, 32, 10);
+
+            // Eyes
+            ctx.fillStyle = '#000';
+            ctx.fillRect(x + 12, y + 4, 4, 4);
+            ctx.fillRect(x + 28, y + 4, 4, 4);
+            ctx.fillStyle = colors[this.type];
+
+            // Claws
+            if (frame === 0) {
+                ctx.fillRect(x + 2, y + 22, 4, 4);
+                ctx.fillRect(x + 10, y + 22, 4, 4);
+                ctx.fillRect(x + 26, y + 22, 4, 4);
+                ctx.fillRect(x + 34, y + 22, 4, 4);
+            } else {
+                ctx.fillRect(x + 4, y + 22, 4, 4);
+                ctx.fillRect(x + 14, y + 22, 4, 4);
+                ctx.fillRect(x + 22, y + 22, 4, 4);
+                ctx.fillRect(x + 32, y + 22, 4, 4);
+            }
+
+        } else {
+            // MAGENTA - Jellyfish style
+            ctx.fillRect(x + 6, y, 28, 14);
+            ctx.fillRect(x + 8, y + 14, 24, 10);
+
+            // Eyes
+            ctx.fillStyle = '#000';
+            ctx.fillRect(x + 12, y + 4, 4, 4);
+            ctx.fillRect(x + 28, y + 4, 4, 4);
+            ctx.fillStyle = colors[this.type];
+
+            // Tentacles
+            if (frame === 0) {
+                ctx.fillRect(x + 6, y + 24, 4, 4);
+                ctx.fillRect(x + 16, y + 24, 4, 4);
+                ctx.fillRect(x + 26, y + 24, 4, 4);
+            } else {
+                ctx.fillRect(x + 10, y + 24, 4, 4);
+                ctx.fillRect(x + 20, y + 24, 4, 4);
+                ctx.fillRect(x + 30, y + 24, 4, 4);
             }
         }
     }
@@ -375,38 +280,24 @@ function updatePlayer() {
 }
 
 function drawPlayer() {
-    // Classic arcade ship - compact shape
     ctx.fillStyle = '#00ff00';
+    ctx.strokeStyle = '#00ff00';
+    ctx.lineWidth = 2;
 
-    // Main body
-    drawPixel(player.x + 8, player.y + 4, 2);
-    drawPixel(player.x + 10, player.y + 4, 2);
-    drawPixel(player.x + 12, player.y + 4, 2);
-    drawPixel(player.x + 14, player.y + 4, 2);
-    drawPixel(player.x + 16, player.y + 4, 2);
-    drawPixel(player.x + 18, player.y + 4, 2);
+    // Simple space invaders ship
+    // Top point
+    ctx.beginPath();
+    ctx.moveTo(player.x + player.width / 2, player.y);
+    ctx.lineTo(player.x + player.width, player.y + player.height / 2);
+    ctx.lineTo(player.x + player.width - 6, player.y + player.height);
+    ctx.lineTo(player.x + 6, player.y + player.height);
+    ctx.lineTo(player.x, player.y + player.height / 2);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
 
-    // Sides
-    drawPixel(player.x + 6, player.y + 6, 2);
-    drawPixel(player.x + 8, player.y + 6, 2);
-    drawPixel(player.x + 10, player.y + 6, 2);
-    drawPixel(player.x + 12, player.y + 6, 2);
-    drawPixel(player.x + 14, player.y + 6, 2);
-    drawPixel(player.x + 16, player.y + 6, 2);
-    drawPixel(player.x + 18, player.y + 6, 2);
-    drawPixel(player.x + 20, player.y + 6, 2);
-
-    // Bottom
-    drawPixel(player.x + 8, player.y + 8, 2);
-    drawPixel(player.x + 10, player.y + 8, 2);
-    drawPixel(player.x + 12, player.y + 8, 2);
-    drawPixel(player.x + 14, player.y + 8, 2);
-    drawPixel(player.x + 16, player.y + 8, 2);
-    drawPixel(player.x + 18, player.y + 8, 2);
-
-    // Bottom point
-    drawPixel(player.x + 12, player.y + 10, 2);
-    drawPixel(player.x + 14, player.y + 10, 2);
+    // Cockpit
+    ctx.fillRect(player.x + 14, player.y + 6, 12, 8);
 }
 
 function updateBullets() {
@@ -464,17 +355,13 @@ function drawBullets() {
     // Player bullets - green laser
     ctx.fillStyle = '#00ff00';
     for (let bullet of bullets) {
-        drawPixel(bullet.x, bullet.y, 2);
-        drawPixel(bullet.x + 2, bullet.y, 2);
-        drawPixel(bullet.x + 2, bullet.y + 2, 2);
+        ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
     }
 
     // Enemy bullets - red plasma
     ctx.fillStyle = '#ff3333';
     for (let bullet of enemyBullets) {
-        drawPixel(bullet.x, bullet.y, 2);
-        drawPixel(bullet.x + 2, bullet.y, 2);
-        drawPixel(bullet.x + 2, bullet.y + 2, 2);
+        ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
     }
 }
 
@@ -587,7 +474,8 @@ function gameLoop(currentTime) {
 // Initialize game
 createEnemyWave();
 updateGamepadStatus();
-gameLoop();
+draw();
+requestAnimationFrame(gameLoop);
 
 // Fallback for checking gamepad connections
 setInterval(() => {
