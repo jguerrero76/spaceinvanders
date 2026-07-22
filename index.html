@@ -178,5 +178,20 @@
     </div>
 
     <script src="game.js"></script>
+    <script>
+        // Hide instructions when game starts
+        const originalInterval = setInterval;
+        let instructionShown = true;
+
+        function checkGameStarted() {
+            if (typeof gameStarted !== 'undefined' && gameStarted && instructionShown) {
+                const instructions = document.getElementById('instructions');
+                instructions.style.display = 'none';
+                instructionShown = false;
+            }
+        }
+
+        setInterval(checkGameStarted, 100);
+    </script>
 </body>
 </html>

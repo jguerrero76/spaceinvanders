@@ -12,6 +12,7 @@ let score = 0;
 let lives = 3;
 let level = 1;
 let gameRunning = true;
+let gameStarted = false;
 let gamepadConnected = false;
 let gamepadIndex = null;
 let lastFrameTime = 0;
@@ -305,6 +306,7 @@ function updatePlayer() {
         });
         player.shoot = false;
         player.shootCooldown = player.maxShootCooldown;
+        gameStarted = true; // Hide instructions on first shot
     }
 }
 
@@ -443,6 +445,19 @@ function updateEnemies() {
         for (let enemy of enemies) {
             enemy.direction *= -1;
             enemy.y += 30;
+        }
+    }
+
+    // Check if enemies collide with player
+    for (let enemy of enemies) {
+        if (
+            enemy.x < player.x + player.width &&
+            enemy.x + enemy.width > player.x &&
+            enemy.y < player.y + player.height &&
+            enemy.y + enemy.height > player.y
+        ) {
+            endGame();
+            return;
         }
     }
 
