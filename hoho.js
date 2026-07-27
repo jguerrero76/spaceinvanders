@@ -64,34 +64,77 @@ class HohoEnemy {
     }
 
     draw() {
-        hohoCtx.fillStyle = '#0099ff';
+        const x = this.x;
+        const y = this.y;
+        const centerX = x + this.width / 2;
 
-        // Body (snowball stack)
+        hohoCtx.fillStyle = '#87CEEB';
+
+        // Bottom snowball (enemy - ice blue)
         hohoCtx.beginPath();
-        hohoCtx.arc(this.x + this.width / 2, this.y + 15, 12, 0, Math.PI * 2);
+        hohoCtx.arc(centerX, y + 35, 16, 0, Math.PI * 2);
+        hohoCtx.fill();
+        hohoCtx.strokeStyle = '#5A9FBD';
+        hohoCtx.lineWidth = 1.5;
+        hohoCtx.stroke();
+
+        // Middle snowball
+        hohoCtx.fillStyle = '#87CEEB';
+        hohoCtx.beginPath();
+        hohoCtx.arc(centerX, y + 15, 12, 0, Math.PI * 2);
+        hohoCtx.fill();
+        hohoCtx.strokeStyle = '#5A9FBD';
+        hohoCtx.lineWidth = 1.5;
+        hohoCtx.stroke();
+
+        // Head snowball
+        hohoCtx.fillStyle = '#87CEEB';
+        hohoCtx.beginPath();
+        hohoCtx.arc(centerX, y + 2, 8, 0, Math.PI * 2);
+        hohoCtx.fill();
+        hohoCtx.strokeStyle = '#5A9FBD';
+        hohoCtx.lineWidth = 1.5;
+        hohoCtx.stroke();
+
+        // Evil eyes (red)
+        hohoCtx.fillStyle = '#ff3333';
+        hohoCtx.beginPath();
+        hohoCtx.arc(centerX - 4, y - 1, 2, 0, Math.PI * 2);
+        hohoCtx.fill();
+        hohoCtx.beginPath();
+        hohoCtx.arc(centerX + 4, y - 1, 2, 0, Math.PI * 2);
         hohoCtx.fill();
 
+        // Evil mouth
+        hohoCtx.strokeStyle = '#ff3333';
+        hohoCtx.lineWidth = 2;
         hohoCtx.beginPath();
-        hohoCtx.arc(this.x + this.width / 2, this.y + 35, 15, 0, Math.PI * 2);
-        hohoCtx.fill();
+        hohoCtx.arc(centerX, y + 3, 3, 0, Math.PI, true);
+        hohoCtx.stroke();
 
-        // Eyes
-        hohoCtx.fillStyle = '#0066cc';
-        hohoCtx.fillRect(this.x + 12, this.y + 8, 4, 4);
-        hohoCtx.fillRect(this.x + 24, this.y + 8, 4, 4);
-
-        // Stick arms
+        // Stick arms with icicles
         hohoCtx.strokeStyle = '#8B6F47';
         hohoCtx.lineWidth = 3;
         hohoCtx.beginPath();
-        hohoCtx.moveTo(this.x - 10, this.y + 30);
-        hohoCtx.lineTo(this.x - 25, this.y + 25);
+        hohoCtx.moveTo(x - 10, y + 30);
+        hohoCtx.lineTo(x - 30, y + 20);
         hohoCtx.stroke();
 
         hohoCtx.beginPath();
-        hohoCtx.moveTo(this.x + 50, this.y + 30);
-        hohoCtx.lineTo(this.x + 65, this.y + 25);
+        hohoCtx.moveTo(x + 50, y + 30);
+        hohoCtx.lineTo(x + 70, y + 20);
         hohoCtx.stroke();
+
+        // Icicle effect on arms
+        hohoCtx.fillStyle = '#b0e0e6';
+        for (let i = 0; i < 3; i++) {
+            hohoCtx.beginPath();
+            hohoCtx.arc(x - 15 - i * 5, y + 25 - i * 3, 2, 0, Math.PI * 2);
+            hohoCtx.fill();
+            hohoCtx.beginPath();
+            hohoCtx.arc(x + 55 + i * 5, y + 25 - i * 3, 2, 0, Math.PI * 2);
+            hohoCtx.fill();
+        }
     }
 }
 
@@ -133,21 +176,81 @@ function drawHohoPlayer() {
         return;
     }
 
-    hohoCtx.fillStyle = '#00ff00';
+    const x = hohoPlayer.x;
+    const y = hohoPlayer.y;
+    const centerX = x + hohoPlayer.width / 2;
 
-    // Body (snowball stack)
+    hohoCtx.fillStyle = '#fff';
+
+    // Bottom snowball (largest)
     hohoCtx.beginPath();
-    hohoCtx.arc(hohoPlayer.x + hohoPlayer.width / 2, hohoPlayer.y + 15, 12, 0, Math.PI * 2);
+    hohoCtx.arc(centerX, y + 35, 16, 0, Math.PI * 2);
     hohoCtx.fill();
+    hohoCtx.strokeStyle = '#e0e0e0';
+    hohoCtx.lineWidth = 1.5;
+    hohoCtx.stroke();
 
+    // Middle snowball
+    hohoCtx.fillStyle = '#fff';
     hohoCtx.beginPath();
-    hohoCtx.arc(hohoPlayer.x + hohoPlayer.width / 2, hohoPlayer.y + 35, 15, 0, Math.PI * 2);
+    hohoCtx.arc(centerX, y + 15, 12, 0, Math.PI * 2);
     hohoCtx.fill();
+    hohoCtx.strokeStyle = '#e0e0e0';
+    hohoCtx.lineWidth = 1.5;
+    hohoCtx.stroke();
 
-    // Eyes - happy
+    // Head snowball (top)
+    hohoCtx.fillStyle = '#fff';
+    hohoCtx.beginPath();
+    hohoCtx.arc(centerX, y + 2, 8, 0, Math.PI * 2);
+    hohoCtx.fill();
+    hohoCtx.strokeStyle = '#e0e0e0';
+    hohoCtx.lineWidth = 1.5;
+    hohoCtx.stroke();
+
+    // Eyes - black coal
     hohoCtx.fillStyle = '#000';
-    hohoCtx.fillRect(hohoPlayer.x + 10, hohoPlayer.y + 8, 5, 5);
-    hohoCtx.fillRect(hohoPlayer.x + 25, hohoPlayer.y + 8, 5, 5);
+    hohoCtx.beginPath();
+    hohoCtx.arc(centerX - 4, y - 1, 1.5, 0, Math.PI * 2);
+    hohoCtx.fill();
+    hohoCtx.beginPath();
+    hohoCtx.arc(centerX + 4, y - 1, 1.5, 0, Math.PI * 2);
+    hohoCtx.fill();
+
+    // Carrot nose (orange)
+    hohoCtx.fillStyle = '#ff9900';
+    hohoCtx.beginPath();
+    hohoCtx.moveTo(centerX, y + 2);
+    hohoCtx.lineTo(centerX + 3, y + 4);
+    hohoCtx.lineTo(centerX, y + 6);
+    hohoCtx.closePath();
+    hohoCtx.fill();
+
+    // Smile (coal buttons)
+    hohoCtx.fillStyle = '#000';
+    hohoCtx.beginPath();
+    hohoCtx.arc(centerX - 3, y + 8, 1, 0, Math.PI * 2);
+    hohoCtx.fill();
+    hohoCtx.beginPath();
+    hohoCtx.arc(centerX + 3, y + 8, 1, 0, Math.PI * 2);
+    hohoCtx.fill();
+
+    // Coal buttons on body
+    hohoCtx.beginPath();
+    hohoCtx.arc(centerX - 2, y + 18, 1, 0, Math.PI * 2);
+    hohoCtx.fill();
+    hohoCtx.beginPath();
+    hohoCtx.arc(centerX + 2, y + 18, 1, 0, Math.PI * 2);
+    hohoCtx.fill();
+    hohoCtx.beginPath();
+    hohoCtx.arc(centerX - 3, y + 26, 1.5, 0, Math.PI * 2);
+    hohoCtx.fill();
+    hohoCtx.beginPath();
+    hohoCtx.arc(centerX, y + 28, 1.5, 0, Math.PI * 2);
+    hohoCtx.fill();
+    hohoCtx.beginPath();
+    hohoCtx.arc(centerX + 3, y + 26, 1.5, 0, Math.PI * 2);
+    hohoCtx.fill();
 
     // Smile
     hohoCtx.strokeStyle = '#000';
@@ -215,14 +318,31 @@ function updateHohoSnowballs() {
 }
 
 function drawHohoSnowballs() {
-    hohoCtx.fillStyle = '#ffffff';
     for (let ball of hohoSnowballs) {
+        // Snowball glow effect
+        hohoCtx.fillStyle = 'rgba(200, 230, 255, 0.4)';
+        hohoCtx.beginPath();
+        hohoCtx.arc(ball.x, ball.y, ball.radius + 3, 0, Math.PI * 2);
+        hohoCtx.fill();
+
+        // Main snowball
+        hohoCtx.fillStyle = '#ffffff';
         hohoCtx.beginPath();
         hohoCtx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
         hohoCtx.fill();
-        hohoCtx.strokeStyle = '#e6f3ff';
-        hohoCtx.lineWidth = 1;
+
+        // Snowball edge highlight
+        hohoCtx.strokeStyle = '#e0f0ff';
+        hohoCtx.lineWidth = 2;
+        hohoCtx.beginPath();
+        hohoCtx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
         hohoCtx.stroke();
+
+        // Ice sparkle (little highlight)
+        hohoCtx.fillStyle = '#ffffff';
+        hohoCtx.beginPath();
+        hohoCtx.arc(ball.x - ball.radius * 0.4, ball.y - ball.radius * 0.4, 1.5, 0, Math.PI * 2);
+        hohoCtx.fill();
     }
 }
 

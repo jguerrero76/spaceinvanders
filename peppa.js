@@ -62,17 +62,58 @@ class PeppaPlatform {
     }
 
     draw() {
-        // Platform color based on type
-        let color = '#8B4513'; // Brown
-        if (this.type === 'moving') color = '#FFD700'; // Gold
+        const x = this.x;
+        const y = this.y;
+        const w = this.width;
+        const h = this.height;
 
-        peppaCtx.fillStyle = color;
-        peppaCtx.fillRect(this.x, this.y, this.width, this.height);
+        if (this.type === 'moving') {
+            // Moving platform - Gold with glow
+            peppaCtx.fillStyle = '#FFD700';
+            peppaCtx.shadowColor = 'rgba(255, 215, 0, 0.6)';
+            peppaCtx.shadowBlur = 10;
+            peppaCtx.fillRect(x, y, w, h);
+            peppaCtx.shadowBlur = 0;
+
+            // Gold shine effect
+            peppaCtx.fillStyle = 'rgba(255, 255, 200, 0.4)';
+            peppaCtx.fillRect(x + 2, y + 1, w - 4, h / 2 - 1);
+
+            // Movement indicator arrows
+            peppaCtx.strokeStyle = '#DAA520';
+            peppaCtx.lineWidth = 1.5;
+            peppaCtx.beginPath();
+            peppaCtx.moveTo(x + w / 4, y + h / 2);
+            peppaCtx.lineTo(x + w / 4 - 4, y + h / 2);
+            peppaCtx.stroke();
+            peppaCtx.beginPath();
+            peppaCtx.moveTo(x + 3 * w / 4, y + h / 2);
+            peppaCtx.lineTo(x + 3 * w / 4 + 4, y + h / 2);
+            peppaCtx.stroke();
+        } else {
+            // Normal platform - Brown wood texture
+            peppaCtx.fillStyle = '#8B4513';
+            peppaCtx.fillRect(x, y, w, h);
+
+            // Wood grain effect
+            peppaCtx.strokeStyle = '#654321';
+            peppaCtx.lineWidth = 1;
+            for (let i = 0; i < w; i += 12) {
+                peppaCtx.beginPath();
+                peppaCtx.moveTo(x + i, y);
+                peppaCtx.lineTo(x + i, y + h);
+                peppaCtx.stroke();
+            }
+
+            // Platform highlight (top edge)
+            peppaCtx.fillStyle = 'rgba(139, 69, 19, 0.6)';
+            peppaCtx.fillRect(x, y, w, 2);
+        }
 
         // Platform border
         peppaCtx.strokeStyle = '#654321';
         peppaCtx.lineWidth = 2;
-        peppaCtx.strokeRect(this.x, this.y, this.width, this.height);
+        peppaCtx.strokeRect(x, y, w, h);
     }
 }
 
@@ -220,14 +261,81 @@ class PeppaCollectible {
     }
 
     draw() {
+        const x = this.x - this.width / 2;
+        const y = this.y - this.height / 2;
+        const bob = Math.sin(this.bobOffset) * 2;
+
         if (this.type === 'apple') {
+            // Red apple with shine
             peppaCtx.fillStyle = '#FF0000';
+            peppaCtx.beginPath();
+            peppaCtx.arc(x + 7.5, y + 7.5 + bob, 7, 0, Math.PI * 2);
+            peppaCtx.fill();
+
+            // Apple shine
+            peppaCtx.fillStyle = 'rgba(255, 200, 100, 0.6)';
+            peppaCtx.beginPath();
+            peppaCtx.arc(x + 4, y + 4 + bob, 2, 0, Math.PI * 2);
+            peppaCtx.fill();
+
+            // Stem
+            peppaCtx.strokeStyle = '#8B4513';
+            peppaCtx.lineWidth = 2;
+            peppaCtx.beginPath();
+            peppaCtx.moveTo(x + 7.5, y + bob);
+            peppaCtx.lineTo(x + 7.5, y - 3 + bob);
+            peppaCtx.stroke();
+
         } else if (this.type === 'flower') {
+            // Yellow flower with petals
             peppaCtx.fillStyle = '#FFD700';
+            const centerX = x + 7.5;
+            const centerY = y + 7.5 + bob;
+
+            // Petals
+            for (let i = 0; i < 5; i++) {
+                const angle = (Math.PI * 2 * i) / 5;
+                const px = centerX + Math.cos(angle) * 4;
+                const py = centerY + Math.sin(angle) * 4;
+                peppaCtx.beginPath();
+                peppaCtx.arc(px, py, 2.5, 0, Math.PI * 2);
+                peppaCtx.fill();
+            }
+
+            // Center
+            peppaCtx.fillStyle = '#FFA500';
+            peppaCtx.beginPath();
+            peppaCtx.arc(centerX, centerY, 2, 0, Math.PI * 2);
+            peppaCtx.fill();
+
         } else {
+            // Pink strawberry
             peppaCtx.fillStyle = '#FF7EC7';
+            peppaCtx.beginPath();
+            peppaCtx.arc(x + 7.5, y + 7.5 + bob, 6, 0, Math.PI * 2);
+            peppaCtx.fill();
+
+            // Seeds
+            peppaCtx.fillStyle = '#FFD700';
+            for (let i = 0; i < 5; i++) {
+                for (let j = 0; j < 3; j++) {
+                    const px = x + 2 + i * 2.5;
+                    const py = y + 2 + j * 2.5 + bob;
+                    peppaCtx.beginPath();
+                    peppaCtx.arc(px, py, 0.8, 0, Math.PI * 2);
+                    peppaCtx.fill();
+                }
+            }
+
+            // Leaf
+            peppaCtx.fillStyle = '#00CC00';
+            peppaCtx.beginPath();
+            peppaCtx.moveTo(x + 7.5, y + bob);
+            peppaCtx.lineTo(x + 5, y - 2 + bob);
+            peppaCtx.lineTo(x + 7.5, y - 3 + bob);
+            peppaCtx.closePath();
+            peppaCtx.fill();
         }
-        peppaCtx.fillRect(this.x, this.y, this.width, this.height);
     }
 }
 

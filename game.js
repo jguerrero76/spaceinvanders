@@ -180,19 +180,37 @@ function drawPixel(x, y, size = 4) {
     ctx.fillRect(x, y, size, size);
 }
 
-// Create explosion effect
+// Create explosion effect with multiple particle types
 function createExplosion(x, y, color = '#ffff00') {
-    for (let i = 0; i < 8; i++) {
-        const angle = (Math.PI * 2 * i) / 8;
-        const speed = 2 + Math.random() * 3;
+    // Main explosion particles
+    for (let i = 0; i < 12; i++) {
+        const angle = (Math.PI * 2 * i) / 12;
+        const speed = 2 + Math.random() * 4;
         particles.push({
             x: x,
             y: y,
             vx: Math.cos(angle) * speed,
             vy: Math.sin(angle) * speed,
-            life: 20,
-            maxLife: 20,
-            color: color
+            life: 25,
+            maxLife: 25,
+            color: color,
+            size: 4 + Math.random() * 2
+        });
+    }
+
+    // Bright core particles
+    for (let i = 0; i < 6; i++) {
+        const angle = (Math.PI * 2 * i) / 6;
+        const speed = 1 + Math.random() * 2;
+        particles.push({
+            x: x,
+            y: y,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed,
+            life: 15,
+            maxLife: 15,
+            color: '#ffffff',
+            size: 2
         });
     }
 }
@@ -229,79 +247,153 @@ class Enemy {
         const y = this.y;
         const frame = Math.floor(animationFrame / 10) % 2;
 
-        // Colors
+        // Colors with more vibrant palette
         const colors = ['#ff3333', '#00ffff', '#ff00ff'];
         ctx.fillStyle = colors[this.type];
         ctx.strokeStyle = colors[this.type];
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 1.5;
 
-        // Draw simple but recognizable aliens
         if (this.type === 0) {
-            // RED - Octopus style - Higher points
-            ctx.fillRect(x + 8, y + 4, 24, 12);
-            ctx.fillRect(x + 6, y + 16, 28, 8);
+            // RED - Detailed Octopus/Squid alien
+            // Head (square with border)
+            ctx.fillRect(x + 6, y + 2, 28, 16);
+            ctx.stroke();
 
-            // Eyes
+            // Body
+            ctx.fillRect(x + 8, y + 16, 24, 10);
+
+            // Eyes with pupils
+            ctx.fillStyle = '#fff';
+            ctx.beginPath();
+            ctx.arc(x + 12, y + 8, 3, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(x + 28, y + 8, 3, 0, Math.PI * 2);
+            ctx.fill();
+
             ctx.fillStyle = '#000';
-            ctx.fillRect(x + 10, y + 6, 4, 4);
-            ctx.fillRect(x + 26, y + 6, 4, 4);
-            ctx.fillStyle = colors[this.type];
+            ctx.beginPath();
+            ctx.arc(x + 12, y + 8, 1.5, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(x + 28, y + 8, 1.5, 0, Math.PI * 2);
+            ctx.fill();
 
-            // Tentacles
+            // Mouth line
+            ctx.strokeStyle = colors[this.type];
+            ctx.beginPath();
+            ctx.moveTo(x + 14, y + 14);
+            ctx.lineTo(x + 26, y + 14);
+            ctx.stroke();
+
+            // Animated tentacles
+            ctx.fillStyle = colors[this.type];
             if (frame === 0) {
-                ctx.fillRect(x + 6, y + 24, 4, 4);
-                ctx.fillRect(x + 18, y + 24, 4, 4);
-                ctx.fillRect(x + 30, y + 24, 4, 4);
+                ctx.fillRect(x + 6, y + 26, 3, 3);
+                ctx.fillRect(x + 15, y + 26, 3, 3);
+                ctx.fillRect(x + 31, y + 26, 3, 3);
             } else {
-                ctx.fillRect(x + 8, y + 24, 4, 4);
-                ctx.fillRect(x + 20, y + 24, 4, 4);
-                ctx.fillRect(x + 28, y + 24, 4, 4);
+                ctx.fillRect(x + 8, y + 26, 3, 3);
+                ctx.fillRect(x + 17, y + 26, 3, 3);
+                ctx.fillRect(x + 29, y + 26, 3, 3);
             }
 
         } else if (this.type === 1) {
-            // CYAN - Crab style
-            ctx.fillRect(x + 6, y + 2, 28, 10);
-            ctx.fillRect(x + 4, y + 12, 32, 10);
+            // CYAN - Detailed Crab alien
+            // Head
+            ctx.beginPath();
+            ctx.arc(x + 12, y + 6, 5, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(x + 28, y + 6, 5, 0, Math.PI * 2);
+            ctx.fill();
 
-            // Eyes
+            // Body (wider)
+            ctx.fillRect(x + 4, y + 12, 32, 12);
+            ctx.stroke();
+
+            // Eyes with glow
+            ctx.fillStyle = '#ffff00';
+            ctx.beginPath();
+            ctx.arc(x + 12, y + 6, 2, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(x + 28, y + 6, 2, 0, Math.PI * 2);
+            ctx.fill();
+
             ctx.fillStyle = '#000';
-            ctx.fillRect(x + 12, y + 4, 4, 4);
-            ctx.fillRect(x + 28, y + 4, 4, 4);
-            ctx.fillStyle = colors[this.type];
+            ctx.beginPath();
+            ctx.arc(x + 12, y + 6, 1, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(x + 28, y + 6, 1, 0, Math.PI * 2);
+            ctx.fill();
 
-            // Claws
+            // Animated claws
+            ctx.fillStyle = colors[this.type];
             if (frame === 0) {
-                ctx.fillRect(x + 2, y + 22, 4, 4);
-                ctx.fillRect(x + 10, y + 22, 4, 4);
-                ctx.fillRect(x + 26, y + 22, 4, 4);
-                ctx.fillRect(x + 34, y + 22, 4, 4);
+                ctx.fillRect(x + 1, y + 24, 4, 3);
+                ctx.fillRect(x + 10, y + 24, 4, 3);
+                ctx.fillRect(x + 26, y + 24, 4, 3);
+                ctx.fillRect(x + 35, y + 24, 4, 3);
             } else {
-                ctx.fillRect(x + 4, y + 22, 4, 4);
-                ctx.fillRect(x + 14, y + 22, 4, 4);
-                ctx.fillRect(x + 22, y + 22, 4, 4);
-                ctx.fillRect(x + 32, y + 22, 4, 4);
+                ctx.fillRect(x + 2, y + 24, 4, 3);
+                ctx.fillRect(x + 12, y + 24, 4, 3);
+                ctx.fillRect(x + 24, y + 24, 4, 3);
+                ctx.fillRect(x + 34, y + 24, 4, 3);
             }
 
         } else {
-            // MAGENTA - Jellyfish style
-            ctx.fillRect(x + 6, y, 28, 14);
-            ctx.fillRect(x + 8, y + 14, 24, 10);
+            // MAGENTA - Detailed Jellyfish/UFO alien
+            // Dome top
+            ctx.beginPath();
+            ctx.arc(x + 20, y + 6, 10, 0, Math.PI);
+            ctx.fill();
+            ctx.stroke();
+
+            // Main body
+            ctx.fillRect(x + 6, y + 6, 28, 14);
+            ctx.stroke();
+
+            // Bottom saucer
+            ctx.beginPath();
+            ctx.ellipse(x + 20, y + 24, 14, 4, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+
+            // Center window light
+            ctx.fillStyle = '#ffff00';
+            ctx.beginPath();
+            ctx.arc(x + 20, y + 12, 4, 0, Math.PI * 2);
+            ctx.fill();
 
             // Eyes
-            ctx.fillStyle = '#000';
-            ctx.fillRect(x + 12, y + 4, 4, 4);
-            ctx.fillRect(x + 28, y + 4, 4, 4);
-            ctx.fillStyle = colors[this.type];
+            ctx.fillStyle = '#fff';
+            ctx.beginPath();
+            ctx.arc(x + 12, y + 10, 2.5, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(x + 28, y + 10, 2.5, 0, Math.PI * 2);
+            ctx.fill();
 
-            // Tentacles
+            ctx.fillStyle = '#000';
+            ctx.beginPath();
+            ctx.arc(x + 12, y + 10, 1, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(x + 28, y + 10, 1, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Animated tentacles
+            ctx.fillStyle = colors[this.type];
             if (frame === 0) {
-                ctx.fillRect(x + 6, y + 24, 4, 4);
-                ctx.fillRect(x + 16, y + 24, 4, 4);
-                ctx.fillRect(x + 26, y + 24, 4, 4);
+                ctx.fillRect(x + 6, y + 28, 3, 3);
+                ctx.fillRect(x + 16, y + 28, 3, 3);
+                ctx.fillRect(x + 26, y + 28, 3, 3);
             } else {
-                ctx.fillRect(x + 10, y + 24, 4, 4);
-                ctx.fillRect(x + 20, y + 24, 4, 4);
-                ctx.fillRect(x + 30, y + 24, 4, 4);
+                ctx.fillRect(x + 8, y + 28, 3, 3);
+                ctx.fillRect(x + 18, y + 28, 3, 3);
+                ctx.fillRect(x + 28, y + 28, 3, 3);
             }
         }
     }
@@ -367,24 +459,38 @@ function updatePlayer() {
 }
 
 function drawPlayer() {
+    const x = player.x;
+    const y = player.y;
+
+    // Main hull - gradient effect
     ctx.fillStyle = '#00ff00';
-    ctx.strokeStyle = '#00ff00';
+    ctx.strokeStyle = '#00ffff';
     ctx.lineWidth = 2;
 
-    // Simple space invaders ship
-    // Top point
+    // Ship body (arrow/triangle pointing up)
     ctx.beginPath();
-    ctx.moveTo(player.x + player.width / 2, player.y);
-    ctx.lineTo(player.x + player.width, player.y + player.height / 2);
-    ctx.lineTo(player.x + player.width - 6, player.y + player.height);
-    ctx.lineTo(player.x + 6, player.y + player.height);
-    ctx.lineTo(player.x, player.y + player.height / 2);
+    ctx.moveTo(x + player.width / 2, y);
+    ctx.lineTo(x + player.width, y + player.height / 2);
+    ctx.lineTo(x + player.width - 8, y + player.height);
+    ctx.lineTo(x + player.width / 2, y + player.height - 5);
+    ctx.lineTo(x + 8, y + player.height);
+    ctx.lineTo(x, y + player.height / 2);
     ctx.closePath();
     ctx.fill();
     ctx.stroke();
 
-    // Cockpit
-    ctx.fillRect(player.x + 14, player.y + 6, 12, 8);
+    // Cockpit window
+    ctx.fillStyle = '#00ffff';
+    ctx.fillRect(x + 14, y + 6, 12, 10);
+
+    // Inner cockpit detail
+    ctx.fillStyle = '#000';
+    ctx.fillRect(x + 16, y + 8, 8, 6);
+
+    // Side engines glow
+    ctx.fillStyle = 'rgba(0, 255, 255, 0.7)';
+    ctx.fillRect(x + 2, y + 18, 4, 8);
+    ctx.fillRect(x + 34, y + 18, 4, 8);
 }
 
 function updateBullets() {
@@ -446,17 +552,37 @@ function updateBullets() {
 }
 
 function drawBullets() {
-    // Player bullets - green laser
+    // Player bullets - green laser with glow
     ctx.fillStyle = '#00ff00';
+    ctx.shadowColor = 'rgba(0, 255, 0, 0.8)';
+    ctx.shadowBlur = 10;
     for (let bullet of bullets) {
+        // Main laser beam
         ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+        // Glow effect
+        ctx.fillStyle = 'rgba(0, 255, 0, 0.4)';
+        ctx.fillRect(bullet.x - 2, bullet.y - 2, bullet.width + 4, bullet.height + 4);
+        ctx.fillStyle = '#00ff00';
     }
+    ctx.shadowBlur = 0;
 
-    // Enemy bullets - red plasma
+    // Enemy bullets - red plasma with trail
     ctx.fillStyle = '#ff3333';
+    ctx.shadowColor = 'rgba(255, 51, 51, 0.8)';
+    ctx.shadowBlur = 8;
     for (let bullet of enemyBullets) {
-        ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+        // Main bullet
+        ctx.beginPath();
+        ctx.arc(bullet.x + bullet.width / 2, bullet.y + bullet.height / 2, bullet.width / 2, 0, Math.PI * 2);
+        ctx.fill();
+        // Trail glow
+        ctx.fillStyle = 'rgba(255, 51, 51, 0.3)';
+        ctx.beginPath();
+        ctx.arc(bullet.x + bullet.width / 2, bullet.y + bullet.height / 2, bullet.width, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#ff3333';
     }
+    ctx.shadowBlur = 0;
 }
 
 function updateParticles() {
@@ -478,7 +604,8 @@ function drawParticles() {
         const alpha = p.life / p.maxLife;
         ctx.globalAlpha = alpha;
         ctx.fillStyle = p.color;
-        ctx.fillRect(p.x, p.y, 4, 4);
+        const size = p.size || 4;
+        ctx.fillRect(p.x - size / 2, p.y - size / 2, size, size);
         ctx.globalAlpha = 1;
     }
 }
