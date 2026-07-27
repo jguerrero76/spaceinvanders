@@ -73,22 +73,83 @@ class DefenderEnemy {
     }
 
     draw() {
+        const x = this.x;
+        const y = this.y;
+        const centerX = x + this.width / 2;
+
         defenderCtx.fillStyle = '#0099ff';
 
-        // Body
+        // Body (larger)
         defenderCtx.beginPath();
-        defenderCtx.arc(this.x + this.width / 2, this.y + 12, 8, 0, Math.PI * 2);
+        defenderCtx.arc(centerX, y + 12, 10, 0, Math.PI * 2);
         defenderCtx.fill();
+
+        // Body outline
+        defenderCtx.strokeStyle = '#00ffff';
+        defenderCtx.lineWidth = 1.5;
+        defenderCtx.beginPath();
+        defenderCtx.arc(centerX, y + 12, 10, 0, Math.PI * 2);
+        defenderCtx.stroke();
 
         // Head
+        defenderCtx.fillStyle = '#0099ff';
         defenderCtx.beginPath();
-        defenderCtx.arc(this.x + this.width / 2, this.y + 3, 6, 0, Math.PI * 2);
+        defenderCtx.arc(centerX, y + 3, 7, 0, Math.PI * 2);
         defenderCtx.fill();
 
-        // Eyes
+        // Head outline
+        defenderCtx.strokeStyle = '#00ffff';
+        defenderCtx.lineWidth = 1.5;
+        defenderCtx.beginPath();
+        defenderCtx.arc(centerX, y + 3, 7, 0, Math.PI * 2);
+        defenderCtx.stroke();
+
+        // Eyes (white)
+        defenderCtx.fillStyle = '#fff';
+        defenderCtx.beginPath();
+        defenderCtx.arc(centerX - 3, y + 1, 2, 0, Math.PI * 2);
+        defenderCtx.fill();
+        defenderCtx.beginPath();
+        defenderCtx.arc(centerX + 3, y + 1, 2, 0, Math.PI * 2);
+        defenderCtx.fill();
+
+        // Pupils
         defenderCtx.fillStyle = '#000';
-        defenderCtx.fillRect(this.x + 10, this.y + 1, 2, 2);
-        defenderCtx.fillRect(this.x + 15, this.y + 1, 2, 2);
+        defenderCtx.beginPath();
+        defenderCtx.arc(centerX - 3, y + 1, 1, 0, Math.PI * 2);
+        defenderCtx.fill();
+        defenderCtx.beginPath();
+        defenderCtx.arc(centerX + 3, y + 1, 1, 0, Math.PI * 2);
+        defenderCtx.fill();
+
+        // Mouth line
+        defenderCtx.strokeStyle = '#000';
+        defenderCtx.lineWidth = 1;
+        defenderCtx.beginPath();
+        defenderCtx.moveTo(centerX - 3, y + 5);
+        defenderCtx.lineTo(centerX + 3, y + 5);
+        defenderCtx.stroke();
+
+        // Antennae
+        defenderCtx.strokeStyle = '#0099ff';
+        defenderCtx.lineWidth = 1.5;
+        defenderCtx.beginPath();
+        defenderCtx.moveTo(centerX - 3, y - 5);
+        defenderCtx.lineTo(centerX - 4, y - 10);
+        defenderCtx.stroke();
+        defenderCtx.beginPath();
+        defenderCtx.moveTo(centerX + 3, y - 5);
+        defenderCtx.lineTo(centerX + 4, y - 10);
+        defenderCtx.stroke();
+
+        // Antenna tips
+        defenderCtx.fillStyle = '#00ffff';
+        defenderCtx.beginPath();
+        defenderCtx.arc(centerX - 4, y - 10, 1.5, 0, Math.PI * 2);
+        defenderCtx.fill();
+        defenderCtx.beginPath();
+        defenderCtx.arc(centerX + 4, y - 10, 1.5, 0, Math.PI * 2);
+        defenderCtx.fill();
     }
 }
 
@@ -118,47 +179,80 @@ function updateDefenderPlayer() {
 }
 
 function drawDefenderPlayer() {
-    defenderCtx.fillStyle = '#00ff00';
+    const x = defenderPlayer.x;
+    const y = defenderPlayer.y;
+    const centerX = x + defenderPlayer.width / 2;
 
-    // Main body (big oval)
+    // Main body (big oval) - bright green
+    defenderCtx.fillStyle = '#00ff00';
     defenderCtx.beginPath();
-    defenderCtx.ellipse(
-        defenderPlayer.x + defenderPlayer.width / 2,
-        defenderPlayer.y + 30,
-        25,
-        28,
-        0,
-        0,
-        Math.PI * 2
-    );
+    defenderCtx.ellipse(centerX, y + 30, 25, 28, 0, 0, Math.PI * 2);
     defenderCtx.fill();
+
+    // Body glow effect
+    defenderCtx.strokeStyle = '#00ffff';
+    defenderCtx.lineWidth = 2;
+    defenderCtx.beginPath();
+    defenderCtx.ellipse(centerX, y + 30, 25, 28, 0, 0, Math.PI * 2);
+    defenderCtx.stroke();
 
     // Head
+    defenderCtx.fillStyle = '#00ff00';
     defenderCtx.beginPath();
-    defenderCtx.arc(defenderPlayer.x + defenderPlayer.width / 2, defenderPlayer.y + 10, 15, 0, Math.PI * 2);
+    defenderCtx.arc(centerX, y + 10, 15, 0, Math.PI * 2);
     defenderCtx.fill();
 
-    // Eyes (happy)
+    // Head outline
+    defenderCtx.strokeStyle = '#00ffff';
+    defenderCtx.lineWidth = 2;
+    defenderCtx.beginPath();
+    defenderCtx.arc(centerX, y + 10, 15, 0, Math.PI * 2);
+    defenderCtx.stroke();
+
+    // Eyes (white with black pupils)
+    defenderCtx.fillStyle = '#fff';
+    defenderCtx.beginPath();
+    defenderCtx.arc(centerX - 5, y + 6, 4, 0, Math.PI * 2);
+    defenderCtx.fill();
+    defenderCtx.beginPath();
+    defenderCtx.arc(centerX + 5, y + 6, 4, 0, Math.PI * 2);
+    defenderCtx.fill();
+
+    // Pupils
     defenderCtx.fillStyle = '#000';
-    defenderCtx.fillRect(defenderPlayer.x + 15, defenderPlayer.y + 6, 6, 6);
-    defenderCtx.fillRect(defenderPlayer.x + 29, defenderPlayer.y + 6, 6, 6);
+    defenderCtx.beginPath();
+    defenderCtx.arc(centerX - 5, y + 6, 2, 0, Math.PI * 2);
+    defenderCtx.fill();
+    defenderCtx.beginPath();
+    defenderCtx.arc(centerX + 5, y + 6, 2, 0, Math.PI * 2);
+    defenderCtx.fill();
 
     // Smile
     defenderCtx.strokeStyle = '#000';
-    defenderCtx.lineWidth = 2;
+    defenderCtx.lineWidth = 2.5;
     defenderCtx.beginPath();
-    defenderCtx.arc(defenderPlayer.x + defenderPlayer.width / 2, defenderPlayer.y + 12, 6, 0, Math.PI);
+    defenderCtx.arc(centerX, y + 14, 6, 0, Math.PI);
     defenderCtx.stroke();
 
-    // Arms
+    // Arms (darker green)
     defenderCtx.fillStyle = '#0088cc';
-    defenderCtx.fillRect(defenderPlayer.x - 15, defenderPlayer.y + 20, 15, 12);
-    defenderCtx.fillRect(defenderPlayer.x + defenderPlayer.width, defenderPlayer.y + 20, 15, 12);
+    defenderCtx.fillRect(x - 15, y + 20, 15, 12);
+    defenderCtx.fillRect(x + defenderPlayer.width, y + 20, 15, 12);
 
-    // Feet
+    // Arm outlines
+    defenderCtx.strokeStyle = '#00ffff';
+    defenderCtx.lineWidth = 1.5;
+    defenderCtx.strokeRect(x - 15, y + 20, 15, 12);
+    defenderCtx.strokeRect(x + defenderPlayer.width, y + 20, 15, 12);
+
+    // Feet (rounded)
     defenderCtx.fillStyle = '#0099ff';
-    defenderCtx.fillRect(defenderPlayer.x + 10, defenderPlayer.y + 55, 10, 8);
-    defenderCtx.fillRect(defenderPlayer.x + 30, defenderPlayer.y + 55, 10, 8);
+    defenderCtx.beginPath();
+    defenderCtx.arc(centerX - 8, y + 59, 5, 0, Math.PI * 2);
+    defenderCtx.fill();
+    defenderCtx.beginPath();
+    defenderCtx.arc(centerX + 8, y + 59, 5, 0, Math.PI * 2);
+    defenderCtx.fill();
 }
 
 function updateDefenderItems() {
@@ -212,12 +306,64 @@ function updateDefenderItems() {
 
 function drawDefenderItems() {
     for (let item of defenderItems) {
+        const x = item.x - item.width / 2;
+        const y = item.y - item.height / 2;
+        const centerX = item.x;
+        const centerY = item.y;
+
         if (item.type === 'good') {
+            // Positive item - Shiny star/gem
             defenderCtx.fillStyle = '#ffff00';
+            defenderCtx.shadowColor = 'rgba(255, 255, 0, 0.8)';
+            defenderCtx.shadowBlur = 12;
+
+            // Star shape
+            const points = 5;
+            const outerRadius = item.width / 2;
+            const innerRadius = item.width / 4;
+
+            defenderCtx.beginPath();
+            for (let i = 0; i < points * 2; i++) {
+                const radius = i % 2 === 0 ? outerRadius : innerRadius;
+                const angle = (i * Math.PI) / points - Math.PI / 2;
+                const px = centerX + Math.cos(angle) * radius;
+                const py = centerY + Math.sin(angle) * radius;
+
+                if (i === 0) {
+                    defenderCtx.moveTo(px, py);
+                } else {
+                    defenderCtx.lineTo(px, py);
+                }
+            }
+            defenderCtx.closePath();
+            defenderCtx.fill();
+
+            defenderCtx.shadowBlur = 0;
+
         } else {
+            // Negative item - Spiky bomb/hazard
             defenderCtx.fillStyle = '#ff3333';
+            defenderCtx.shadowColor = 'rgba(255, 51, 51, 0.8)';
+            defenderCtx.shadowBlur = 10;
+
+            // Main bomb sphere
+            defenderCtx.beginPath();
+            defenderCtx.arc(centerX, centerY, item.width / 2, 0, Math.PI * 2);
+            defenderCtx.fill();
+
+            // Spikes
+            for (let i = 0; i < 8; i++) {
+                const angle = (Math.PI * 2 * i) / 8;
+                const x1 = centerX + Math.cos(angle) * (item.width / 2);
+                const y1 = centerY + Math.sin(angle) * (item.width / 2);
+                const x2 = centerX + Math.cos(angle) * (item.width / 2 + 3);
+                const y2 = centerY + Math.sin(angle) * (item.width / 2 + 3);
+
+                defenderCtx.fillRect(x2 - 1, y2 - 1, 2, 2);
+            }
+
+            defenderCtx.shadowBlur = 0;
         }
-        defenderCtx.fillRect(item.x - item.width / 2, item.y - item.height / 2, item.width, item.height);
     }
 }
 
