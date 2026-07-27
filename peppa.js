@@ -125,48 +125,78 @@ class PeppaCharacter {
 
     draw() {
         if (this.type === 'brown') {
-            // Dra. Brown - Oso marrón (enemiga)
+            // Dra. Brown - Bear (enemy)
             peppaCtx.fillStyle = '#8B5A3C';
-            // Cabeza redonda (oso)
+
+            // Large round head (characteristic of bear)
             peppaCtx.beginPath();
-            peppaCtx.arc(this.x + this.width / 2, this.y + 12, 10, 0, Math.PI * 2);
+            peppaCtx.arc(this.x + this.width / 2, this.y + 12, 12, 0, Math.PI * 2);
             peppaCtx.fill();
-            // Cuerpo
+
+            // Ears (two circles on top)
             peppaCtx.beginPath();
-            peppaCtx.ellipse(this.x + this.width / 2, this.y + 28, 12, 12, 0, 0, Math.PI * 2);
+            peppaCtx.arc(this.x + 8, this.y - 2, 4, 0, Math.PI * 2);
             peppaCtx.fill();
-            // Ojos
+            peppaCtx.beginPath();
+            peppaCtx.arc(this.x + 22, this.y - 2, 4, 0, Math.PI * 2);
+            peppaCtx.fill();
+
+            // Eyes (black)
             peppaCtx.fillStyle = '#000';
             peppaCtx.beginPath();
-            peppaCtx.arc(this.x + 8, this.y + 9, 2, 0, Math.PI * 2);
+            peppaCtx.arc(this.x + 10, this.y + 7, 2, 0, Math.PI * 2);
             peppaCtx.fill();
             peppaCtx.beginPath();
-            peppaCtx.arc(this.x + 18, this.y + 9, 2, 0, Math.PI * 2);
+            peppaCtx.arc(this.x + 18, this.y + 7, 2, 0, Math.PI * 2);
+            peppaCtx.fill();
+
+            // Body below head
+            peppaCtx.fillStyle = '#8B5A3C';
+            peppaCtx.beginPath();
+            peppaCtx.ellipse(this.x + this.width / 2, this.y + 28, 11, 13, 0, 0, Math.PI * 2);
             peppaCtx.fill();
         } else if (this.type === 'george') {
-            // George Pig - Rojo/Rosa (hermano pequeño de Peppa)
+            // George Pig - Small red pig (collectible)
             peppaCtx.fillStyle = '#E63946';
-            // Cuerpo (más pequeño que Peppa)
+
+            // Smaller head/body (oval, similar to Peppa but smaller)
             peppaCtx.beginPath();
-            peppaCtx.ellipse(this.x + this.width / 2, this.y + 24, 10, 12, 0, 0, Math.PI * 2);
+            peppaCtx.ellipse(this.x + this.width / 2, this.y + 14, 10, 14, 0, 0, Math.PI * 2);
             peppaCtx.fill();
-            // Cabeza
+
+            // Smaller snout
             peppaCtx.beginPath();
-            peppaCtx.arc(this.x + this.width / 2, this.y + 8, 8, 0, Math.PI * 2);
+            peppaCtx.ellipse(this.x + 4, this.y + 12, 4, 6, 0, 0, Math.PI * 2);
             peppaCtx.fill();
-            // Nariz
-            peppaCtx.fillStyle = '#C1121F';
+
+            // Small ears
             peppaCtx.beginPath();
-            peppaCtx.arc(this.x + this.width / 2 + 2, this.y + 9, 4, 0, Math.PI * 2);
+            peppaCtx.arc(this.x + 8, this.y - 1, 2.5, 0, Math.PI * 2);
             peppaCtx.fill();
-            // Ojos
+            peppaCtx.beginPath();
+            peppaCtx.arc(this.x + 18, this.y - 1, 2.5, 0, Math.PI * 2);
+            peppaCtx.fill();
+
+            // Eyes (black, small)
             peppaCtx.fillStyle = '#000';
             peppaCtx.beginPath();
-            peppaCtx.arc(this.x + 10, this.y + 5, 1.5, 0, Math.PI * 2);
+            peppaCtx.arc(this.x + 8, this.y + 7, 1.5, 0, Math.PI * 2);
             peppaCtx.fill();
             peppaCtx.beginPath();
-            peppaCtx.arc(this.x + 14, this.y + 5, 1.5, 0, Math.PI * 2);
+            peppaCtx.arc(this.x + 16, this.y + 7, 1.5, 0, Math.PI * 2);
             peppaCtx.fill();
+
+            // Small smile
+            peppaCtx.strokeStyle = '#C1121F';
+            peppaCtx.lineWidth = 1.5;
+            peppaCtx.beginPath();
+            peppaCtx.arc(this.x + this.width / 2, this.y + 16, 3, 0, Math.PI);
+            peppaCtx.stroke();
+
+            // Legs (small black rectangles)
+            peppaCtx.fillStyle = '#000';
+            peppaCtx.fillRect(this.x + 8, this.y + 26, 2, 4);
+            peppaCtx.fillRect(this.x + 16, this.y + 26, 2, 4);
         }
     }
 }
@@ -327,42 +357,75 @@ function drawPeppaPlayer() {
     // Peppa Pig - Rosa brillante
     peppaCtx.fillStyle = '#FF7EC7';
 
-    // Cuerpo (ovalado, como Peppa)
+    // Main head/body (large oval pill shape - this is the main characteristic)
     peppaCtx.beginPath();
-    peppaCtx.ellipse(screenX + 15, y + 28, 12, 14, 0, 0, Math.PI * 2);
+    peppaCtx.ellipse(screenX + 15, y + 18, 14, 18, 0, 0, Math.PI * 2);
     peppaCtx.fill();
 
-    // Cabeza (redonda)
+    // Snout (positioned on the left side)
     peppaCtx.beginPath();
-    peppaCtx.arc(screenX + 15, y + 10, 10, 0, Math.PI * 2);
+    peppaCtx.ellipse(screenX + 1, y + 16, 6, 8, 0, 0, Math.PI * 2);
     peppaCtx.fill();
 
-    // Nariz (redonda y grande, característica de Peppa)
-    peppaCtx.fillStyle = '#FF69B4';
+    // Ears (two circles on top)
     peppaCtx.beginPath();
-    peppaCtx.arc(screenX + 18, y + 12, 5, 0, Math.PI * 2);
+    peppaCtx.arc(screenX + 7, y + 0, 4, 0, Math.PI * 2);
+    peppaCtx.fill();
+    peppaCtx.beginPath();
+    peppaCtx.arc(screenX + 23, y + 0, 4, 0, Math.PI * 2);
     peppaCtx.fill();
 
-    // Ojos negros (dos puntos)
+    // Eyes (large white circles with black pupils)
+    peppaCtx.fillStyle = '#FFF';
+    peppaCtx.beginPath();
+    peppaCtx.arc(screenX + 8, y + 12, 4, 0, Math.PI * 2);
+    peppaCtx.fill();
+    peppaCtx.beginPath();
+    peppaCtx.arc(screenX + 18, y + 12, 4, 0, Math.PI * 2);
+    peppaCtx.fill();
+
+    // Pupils (black)
     peppaCtx.fillStyle = '#000';
     peppaCtx.beginPath();
-    peppaCtx.arc(screenX + 10, y + 7, 2, 0, Math.PI * 2);
+    peppaCtx.arc(screenX + 9, y + 13, 2.5, 0, Math.PI * 2);
     peppaCtx.fill();
     peppaCtx.beginPath();
-    peppaCtx.arc(screenX + 13, y + 7, 2, 0, Math.PI * 2);
+    peppaCtx.arc(screenX + 19, y + 13, 2.5, 0, Math.PI * 2);
     peppaCtx.fill();
 
-    // Cola (pequeña línea)
+    // Mouth/smile (arc below)
+    peppaCtx.strokeStyle = '#FF69B4';
+    peppaCtx.lineWidth = 2.5;
+    peppaCtx.beginPath();
+    peppaCtx.arc(screenX + 15, y + 20, 5, 0, Math.PI);
+    peppaCtx.stroke();
+
+    // Cheek spot (pink circle on the right side)
+    peppaCtx.fillStyle = '#FF69B4';
+    peppaCtx.beginPath();
+    peppaCtx.arc(screenX + 26, y + 20, 3, 0, Math.PI * 2);
+    peppaCtx.fill();
+
+    // Arms (two small circles on sides)
+    peppaCtx.fillStyle = '#FFC0CB';
+    peppaCtx.beginPath();
+    peppaCtx.ellipse(screenX - 2, y + 24, 3, 6, 0, 0, Math.PI * 2);
+    peppaCtx.fill();
+    peppaCtx.beginPath();
+    peppaCtx.ellipse(screenX + 32, y + 24, 3, 6, 0, 0, Math.PI * 2);
+    peppaCtx.fill();
+
+    // Legs (two black rectangles at bottom)
+    peppaCtx.fillStyle = '#000';
+    peppaCtx.fillRect(screenX + 8, y + 34, 3, 6);
+    peppaCtx.fillRect(screenX + 18, y + 34, 3, 6);
+
+    // Tail (curl on right back)
     peppaCtx.strokeStyle = '#FF7EC7';
     peppaCtx.lineWidth = 2;
     peppaCtx.beginPath();
-    peppaCtx.arc(screenX + 5, y + 20, 4, 0, Math.PI * 2);
+    peppaCtx.arc(screenX + 30, y + 28, 3, 0, Math.PI * 2);
     peppaCtx.stroke();
-
-    // Patas
-    peppaCtx.fillStyle = '#FF7EC7';
-    peppaCtx.fillRect(screenX + 7, y + 40, 3, 5);
-    peppaCtx.fillRect(screenX + 20, y + 40, 3, 5);
 }
 
 function updatePeppa() {
