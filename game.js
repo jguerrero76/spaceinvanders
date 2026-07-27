@@ -1,11 +1,49 @@
-const canvas = document.getElementById('gameCanvas');
-const ctx = canvas.getContext('2d');
+// Menu and game state management
+function startGame(gameName) {
+    if (gameName === 'spaceinvaders') {
+        document.getElementById('menuScreen').classList.add('hidden');
+        document.getElementById('gameContainer').classList.remove('hidden');
+        initializeCanvas();
+        resetGame();
+    }
+}
+
+function goToMenu() {
+    document.getElementById('menuScreen').classList.remove('hidden');
+    document.getElementById('gameContainer').classList.add('hidden');
+    document.getElementById('gameOver').style.display = 'none';
+}
+
+function resetGame() {
+    score = 0;
+    lives = 3;
+    level = 1;
+    gameRunning = true;
+    gameStarted = false;
+    enemies = [];
+    bullets = [];
+    enemyBullets = [];
+    particles = [];
+    player.x = canvas.width / 2 - 20;
+    player.shootCooldown = 0;
+    document.getElementById('gameOver').style.display = 'none';
+    createEnemyWave();
+    draw();
+}
+
+let canvas, ctx;
+
+// Initialize after menu selection
+function initializeCanvas() {
+    if (canvas) return; // Already initialized
+    canvas = document.getElementById('gameCanvas');
+    ctx = canvas.getContext('2d');
+    canvas.width = 800;
+    canvas.height = 600;
+}
+
 const gameOverScreen = document.getElementById('gameOver');
 const finalScoreSpan = document.getElementById('finalScore');
-
-// Set canvas size
-canvas.width = 800;
-canvas.height = 600;
 
 // Game variables
 let score = 0;
@@ -548,11 +586,8 @@ function gameLoop(currentTime) {
     requestAnimationFrame(gameLoop);
 }
 
-// Initialize game
-createEnemyWave();
+// Initialize game when user starts from menu
 updateGamepadStatus();
-draw();
-requestAnimationFrame(gameLoop);
 
 // Fallback for checking gamepad connections
 setInterval(() => {
@@ -568,3 +603,25 @@ setInterval(() => {
         }
     }
 }, 500);
+
+// Start the main game loop
+function mainGameLoop(currentTime) {
+    if (canvas) { // Only run if canvas is initialized
+        if (lastFrameTime === 0) {
+            lastFrameTime = currentTime;
+        }
+
+        const deltaTime = currentTime - lastFrameTime;
+
+        if (deltaTime >= FRAME_DELAY) {
+            update();
+            draw();
+            animationFrame++;
+            lastFrameTime = currentTime;
+        }
+    }
+
+    requestAnimationFrame(mainGameLoop);
+}
+
+requestAnimationFrame(mainGameLoop);
