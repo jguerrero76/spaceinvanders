@@ -1,10 +1,19 @@
+// Current game tracking
+let currentGame = null;
+
 // Menu and game state management
 function startGame(gameName) {
+    document.getElementById('menuScreen').classList.add('hidden');
+    document.getElementById('gameContainer').classList.remove('hidden');
+
     if (gameName === 'spaceinvaders') {
-        document.getElementById('menuScreen').classList.add('hidden');
-        document.getElementById('gameContainer').classList.remove('hidden');
         initializeCanvas();
         resetGame();
+        currentGame = 'spaceinvaders';
+    } else if (gameName === 'hoho') {
+        initializeHohoCanvas();
+        resetHohoGame();
+        currentGame = 'hoho';
     }
 }
 
@@ -12,6 +21,7 @@ function goToMenu() {
     document.getElementById('menuScreen').classList.remove('hidden');
     document.getElementById('gameContainer').classList.add('hidden');
     document.getElementById('gameOver').style.display = 'none';
+    currentGame = null;
 }
 
 function resetGame() {
