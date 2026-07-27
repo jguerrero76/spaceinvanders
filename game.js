@@ -18,6 +18,10 @@ function startGame(gameName) {
         initializeDefenderCanvas();
         resetDefenderGame();
         currentGame = 'defender';
+    } else if (gameName === 'peppa') {
+        initializePeppaCanvas();
+        resetPeppaGame();
+        currentGame = 'peppa';
     }
 }
 
