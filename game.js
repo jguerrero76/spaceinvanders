@@ -14,6 +14,10 @@ function startGame(gameName) {
         initializeHohoCanvas();
         resetHohoGame();
         currentGame = 'hoho';
+    } else if (gameName === 'defender') {
+        initializeDefenderCanvas();
+        resetDefenderGame();
+        currentGame = 'defender';
     }
 }
 
