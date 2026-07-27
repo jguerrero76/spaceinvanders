@@ -125,31 +125,48 @@ class PeppaCharacter {
 
     draw() {
         if (this.type === 'brown') {
-            // Dr. Brown (enemy)
-            peppaCtx.fillStyle = '#8B6914';
-            // Head
+            // Dra. Brown - Oso marrón (enemiga)
+            peppaCtx.fillStyle = '#8B5A3C';
+            // Cabeza redonda (oso)
             peppaCtx.beginPath();
             peppaCtx.arc(this.x + this.width / 2, this.y + 12, 10, 0, Math.PI * 2);
             peppaCtx.fill();
-            // Body
-            peppaCtx.fillRect(this.x + 5, this.y + 22, 25, 20);
-            // Eyes
-            peppaCtx.fillStyle = '#000';
-            peppaCtx.fillRect(this.x + 8, this.y + 8, 4, 4);
-            peppaCtx.fillRect(this.x + 18, this.y + 8, 4, 4);
-        } else if (this.type === 'george') {
-            // George (collectible)
-            peppaCtx.fillStyle = '#FF6B9D';
-            // Head
+            // Cuerpo
             peppaCtx.beginPath();
-            peppaCtx.arc(this.x + this.width / 2, this.y + 10, 8, 0, Math.PI * 2);
+            peppaCtx.ellipse(this.x + this.width / 2, this.y + 28, 12, 12, 0, 0, Math.PI * 2);
             peppaCtx.fill();
-            // Body
-            peppaCtx.fillRect(this.x + 8, this.y + 18, 20, 15);
-            // Eyes
+            // Ojos
             peppaCtx.fillStyle = '#000';
-            peppaCtx.fillRect(this.x + 10, this.y + 7, 3, 3);
-            peppaCtx.fillRect(this.x + 17, this.y + 7, 3, 3);
+            peppaCtx.beginPath();
+            peppaCtx.arc(this.x + 8, this.y + 9, 2, 0, Math.PI * 2);
+            peppaCtx.fill();
+            peppaCtx.beginPath();
+            peppaCtx.arc(this.x + 18, this.y + 9, 2, 0, Math.PI * 2);
+            peppaCtx.fill();
+        } else if (this.type === 'george') {
+            // George Pig - Rojo/Rosa (hermano pequeño de Peppa)
+            peppaCtx.fillStyle = '#E63946';
+            // Cuerpo (más pequeño que Peppa)
+            peppaCtx.beginPath();
+            peppaCtx.ellipse(this.x + this.width / 2, this.y + 24, 10, 12, 0, 0, Math.PI * 2);
+            peppaCtx.fill();
+            // Cabeza
+            peppaCtx.beginPath();
+            peppaCtx.arc(this.x + this.width / 2, this.y + 8, 8, 0, Math.PI * 2);
+            peppaCtx.fill();
+            // Nariz
+            peppaCtx.fillStyle = '#C1121F';
+            peppaCtx.beginPath();
+            peppaCtx.arc(this.x + this.width / 2 + 2, this.y + 9, 4, 0, Math.PI * 2);
+            peppaCtx.fill();
+            // Ojos
+            peppaCtx.fillStyle = '#000';
+            peppaCtx.beginPath();
+            peppaCtx.arc(this.x + 10, this.y + 5, 1.5, 0, Math.PI * 2);
+            peppaCtx.fill();
+            peppaCtx.beginPath();
+            peppaCtx.arc(this.x + 14, this.y + 5, 1.5, 0, Math.PI * 2);
+            peppaCtx.fill();
         }
     }
 }
@@ -305,24 +322,47 @@ function updatePeppaPlayer() {
 
 function drawPeppaPlayer() {
     const screenX = peppaPlayer.x - peppaCamera.x;
+    const y = peppaPlayer.y;
 
-    // Peppa body
-    peppaCtx.fillStyle = peppaPlayer.color;
-    // Head
+    // Peppa Pig - Rosa brillante
+    peppaCtx.fillStyle = '#FF7EC7';
+
+    // Cuerpo (ovalado, como Peppa)
     peppaCtx.beginPath();
-    peppaCtx.arc(screenX + peppaPlayer.width / 2, peppaPlayer.y + 12, 12, 0, Math.PI * 2);
+    peppaCtx.ellipse(screenX + 15, y + 28, 12, 14, 0, 0, Math.PI * 2);
     peppaCtx.fill();
-    // Body
-    peppaCtx.fillRect(screenX + 5, peppaPlayer.y + 24, 20, 16);
-    // Snout
-    peppaCtx.fillStyle = '#FFB6C1';
+
+    // Cabeza (redonda)
     peppaCtx.beginPath();
-    peppaCtx.arc(screenX + peppaPlayer.width + 5, peppaPlayer.y + 15, 5, 0, Math.PI * 2);
+    peppaCtx.arc(screenX + 15, y + 10, 10, 0, Math.PI * 2);
     peppaCtx.fill();
-    // Eyes
+
+    // Nariz (redonda y grande, característica de Peppa)
+    peppaCtx.fillStyle = '#FF69B4';
+    peppaCtx.beginPath();
+    peppaCtx.arc(screenX + 18, y + 12, 5, 0, Math.PI * 2);
+    peppaCtx.fill();
+
+    // Ojos negros (dos puntos)
     peppaCtx.fillStyle = '#000';
-    peppaCtx.fillRect(screenX + 8, peppaPlayer.y + 8, 4, 4);
-    peppaCtx.fillRect(screenX + 18, peppaPlayer.y + 8, 4, 4);
+    peppaCtx.beginPath();
+    peppaCtx.arc(screenX + 10, y + 7, 2, 0, Math.PI * 2);
+    peppaCtx.fill();
+    peppaCtx.beginPath();
+    peppaCtx.arc(screenX + 13, y + 7, 2, 0, Math.PI * 2);
+    peppaCtx.fill();
+
+    // Cola (pequeña línea)
+    peppaCtx.strokeStyle = '#FF7EC7';
+    peppaCtx.lineWidth = 2;
+    peppaCtx.beginPath();
+    peppaCtx.arc(screenX + 5, y + 20, 4, 0, Math.PI * 2);
+    peppaCtx.stroke();
+
+    // Patas
+    peppaCtx.fillStyle = '#FF7EC7';
+    peppaCtx.fillRect(screenX + 7, y + 40, 3, 5);
+    peppaCtx.fillRect(screenX + 20, y + 40, 3, 5);
 }
 
 function updatePeppa() {
@@ -435,28 +475,50 @@ function drawPeppa() {
     for (let char of peppaEnemies) {
         const screenX = char.x - peppaCamera.x;
         if (screenX + char.width > 0 && screenX < peppaCanvas.width) {
-            peppaCtx.save();
-            peppaCtx.translate(screenX, char.y);
             if (char.type === 'brown') {
-                peppaCtx.fillStyle = '#8B6914';
+                // Dra. Brown - Oso marrón
+                peppaCtx.fillStyle = '#8B5A3C';
+                // Cabeza
                 peppaCtx.beginPath();
-                peppaCtx.arc(char.width / 2, 12, 10, 0, Math.PI * 2);
+                peppaCtx.arc(screenX + char.width / 2, char.y + 12, 10, 0, Math.PI * 2);
                 peppaCtx.fill();
-                peppaCtx.fillRect(5, 22, 25, 20);
+                // Cuerpo
+                peppaCtx.beginPath();
+                peppaCtx.ellipse(screenX + char.width / 2, char.y + 28, 12, 12, 0, 0, Math.PI * 2);
+                peppaCtx.fill();
+                // Ojos
                 peppaCtx.fillStyle = '#000';
-                peppaCtx.fillRect(8, 8, 4, 4);
-                peppaCtx.fillRect(18, 8, 4, 4);
+                peppaCtx.beginPath();
+                peppaCtx.arc(screenX + 8, char.y + 9, 2, 0, Math.PI * 2);
+                peppaCtx.fill();
+                peppaCtx.beginPath();
+                peppaCtx.arc(screenX + 18, char.y + 9, 2, 0, Math.PI * 2);
+                peppaCtx.fill();
             } else if (char.type === 'george') {
-                peppaCtx.fillStyle = '#FF6B9D';
+                // George Pig - Rojo
+                peppaCtx.fillStyle = '#E63946';
+                // Cuerpo
                 peppaCtx.beginPath();
-                peppaCtx.arc(char.width / 2, 10, 8, 0, Math.PI * 2);
+                peppaCtx.ellipse(screenX + char.width / 2, char.y + 24, 10, 12, 0, 0, Math.PI * 2);
                 peppaCtx.fill();
-                peppaCtx.fillRect(8, 18, 20, 15);
+                // Cabeza
+                peppaCtx.beginPath();
+                peppaCtx.arc(screenX + char.width / 2, char.y + 8, 8, 0, Math.PI * 2);
+                peppaCtx.fill();
+                // Nariz
+                peppaCtx.fillStyle = '#C1121F';
+                peppaCtx.beginPath();
+                peppaCtx.arc(screenX + char.width / 2 + 2, char.y + 9, 4, 0, Math.PI * 2);
+                peppaCtx.fill();
+                // Ojos
                 peppaCtx.fillStyle = '#000';
-                peppaCtx.fillRect(10, 7, 3, 3);
-                peppaCtx.fillRect(17, 7, 3, 3);
+                peppaCtx.beginPath();
+                peppaCtx.arc(screenX + 10, char.y + 5, 1.5, 0, Math.PI * 2);
+                peppaCtx.fill();
+                peppaCtx.beginPath();
+                peppaCtx.arc(screenX + 14, char.y + 5, 1.5, 0, Math.PI * 2);
+                peppaCtx.fill();
             }
-            peppaCtx.restore();
         }
     }
 
